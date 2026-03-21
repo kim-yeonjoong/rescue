@@ -1,0 +1,12 @@
+{
+  "name": "rescue",
+  "version": "0.1.1",
+  "private": true,
+  "scripts": {
+    "build": "swift build",
+    "test": "swift test",
+    "dev": "swift run Rescue",
+    "build:swift": "swift build -c release",
+    "test:swift": "swift test"
+  }
+}

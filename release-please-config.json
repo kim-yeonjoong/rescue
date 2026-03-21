@@ -1,0 +1,11 @@
+{
+  "packages": {
+    "apps/rescue": {
+      "release-type": "node",
+      "component": "rescue",
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true
+    }
+  }
+}

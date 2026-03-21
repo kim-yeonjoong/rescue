@@ -1,0 +1,10 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {},
+    "test": {},
+    "dev": {},
+    "build:swift": { "cache": false },
+    "test:swift": { "cache": false }
+  }
+}

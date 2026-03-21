@@ -1,0 +1,70 @@
+/* Settings tabs */
+"General" = "일반";
+"Filters" = "필터";
+"Integrations" = "통합";
+"About" = "정보";
+
+/* General tab */
+"Launch at Login" = "로그인 시 실행";
+"Start Rescue automatically when you log in" = "로그인하면 Rescue가 자동으로 실행돼요";
+"Needs a signed app bundle" = "서명된 앱에서만 사용할 수 있어요";
+"Port Notifications" = "포트 알림";
+"Alerts you when a new port opens" = "새 포트가 열리면 알림을 보내드려요";
+"Refresh interval" = "새로 고침 간격";
+"How often to check for open ports" = "이 간격으로 열린 포트를 확인해요";
+"Language" = "언어";
+"Use System Language" = "기기 설정 언어 사용";
+
+/* Filters tab */
+"No hidden items yet" = "아직 숨긴 항목이 없어요";
+"Processes / Ports to Hide" = "숨길 프로세스 / 포트";
+"Add a process (e.g. node) or port (e.g. 5432) to hide from the list." = "프로세스 이름(예: node)이나 포트(예: 5432)를 추가하면 목록에서 숨겨요.";
+"Process name or port" = "프로세스 이름 또는 포트";
+"Add" = "추가하기";
+
+/* Integrations tab */
+"View and manage running containers" = "실행 중인 컨테이너를 확인하고 관리할 수 있어요";
+"Access local dev servers by name" = "로컬 개발 서버를 이름으로 접속할 수 있어요";
+
+/* About tab */
+"Dev port manager for macOS" = "개발 중인 포트를 한눈에 관리해요";
+
+/* Menu bar */
+"Search ports or containers…" = "포트나 컨테이너를 검색해 보세요";
+"Settings" = "설정";
+"Quit" = "종료";
+
+/* Port list */
+"Looking for open ports…" = "열린 포트를 찾고 있어요…";
+"Port" = "포트";
+"Process" = "프로세스";
+"Framework" = "프레임워크";
+
+/* Port row */
+"Copied" = "복사했어요";
+"Open in Browser" = "브라우저로 열기";
+"Confirm Stop" = "종료하기";
+"Stop Process" = "프로세스 종료하기";
+"sure?" = "삭제";
+"Copy Port" = "포트 번호 복사";
+"Copy URL" = "URL 복사";
+
+/* Docker section */
+"Docker isn't running" = "Docker가 실행되지 않고 있어요";
+"Start Docker to see containers here" = "Docker를 실행하면 컨테이너를 볼 수 있어요";
+"Name" = "이름";
+"Image" = "이미지";
+"Status" = "상태";
+"Start" = "시작하기";
+"Stop" = "중지하기";
+"Restart" = "재시작하기";
+"Hostname" = "호스트명";
+
+/* Portless section */
+"No routes yet" = "등록된 경로가 없어요";
+"portless isn't installed" = "portless가 설치되지 않았어요";
+"Install portless to access servers by name" = "portless를 설치하면 이름으로 접속할 수 있어요";
+
+/* Empty state */
+"No open ports" = "열린 포트가 없어요";
+"Start a dev server to see its ports here" = "개발 서버를 실행하면 포트가 여기 나타나요";

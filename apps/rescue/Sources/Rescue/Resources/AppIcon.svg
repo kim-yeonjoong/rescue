@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e3a5f"/>
+      <stop offset="100%" stop-color="#0a1628"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="200" y1="100" x2="824" y2="924" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffcc80"/>
+      <stop offset="30%" stop-color="#ffb74d"/>
+      <stop offset="60%" stop-color="#ff9800"/>
+      <stop offset="100%" stop-color="#e65100"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="18" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="innerGlow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+
+  <!-- Subtle radial ambient -->
+  <circle cx="512" cy="490" r="420" fill="#1e3a5f" opacity="0.15"/>
+
+  <!-- Lifebuoy with shadow -->
+  <g filter="url(#shadow)">
+    <!-- Outer ring -->
+    <circle cx="512" cy="512" r="300" fill="none" stroke="url(#ring)" stroke-width="100"/>
+    <!-- Inner ring -->
+    <circle cx="512" cy="512" r="120" fill="none" stroke="url(#ring)" stroke-width="45"/>
+    <!-- Top handle -->
+    <line x1="512" y1="80" x2="512" y2="262" stroke="url(#ring)" stroke-width="80" stroke-linecap="round"/>
+    <!-- Bottom handle -->
+    <line x1="512" y1="762" x2="512" y2="944" stroke="url(#ring)" stroke-width="80" stroke-linecap="round"/>
+    <!-- Left handle -->
+    <line x1="80" y1="512" x2="262" y2="512" stroke="url(#ring)" stroke-width="80" stroke-linecap="round"/>
+    <!-- Right handle -->
+    <line x1="762" y1="512" x2="944" y2="512" stroke="url(#ring)" stroke-width="80" stroke-linecap="round"/>
+  </g>
+
+  <!-- Highlight arc (upper-left reflection) -->
+  <path d="M 330 340 A 290 290 0 0 1 694 340" fill="none" stroke="#ffe0b2" stroke-width="14" opacity="0.3" stroke-linecap="round"/>
+  <path d="M 360 360 A 260 260 0 0 1 512 260" fill="none" stroke="#fff3e0" stroke-width="8" opacity="0.2" stroke-linecap="round"/>
+
+  <!-- Subtle cyan glow particles -->
+  <circle cx="390" cy="420" r="6" fill="#4dd0e1" filter="url(#innerGlow)" opacity="0.5"/>
+  <circle cx="640" cy="440" r="5" fill="#4dd0e1" filter="url(#innerGlow)" opacity="0.4"/>
+  <circle cx="460" cy="640" r="4.5" fill="#4dd0e1" filter="url(#innerGlow)" opacity="0.45"/>
+  <circle cx="580" cy="380" r="4" fill="#4dd0e1" filter="url(#innerGlow)" opacity="0.35"/>
+</svg>

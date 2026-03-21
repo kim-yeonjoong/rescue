@@ -1,0 +1,11 @@
+.build/
+.run/
+node_modules/
+.swiftpm/
+.DS_Store
+*.xcodeproj
+*.xcworkspace
+DerivedData/
+.turbo/
+.omc/
+.claude/

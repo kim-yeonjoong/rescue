@@ -16,7 +16,6 @@ public struct ShellResult: Sendable {
 
 private let sigkillEscalationDelay: TimeInterval = 0.2
 
-
 extension Process {
     public static func run(command: String, arguments: [String], timeout: TimeInterval = 10) async -> ShellResult {
         let process = Process()

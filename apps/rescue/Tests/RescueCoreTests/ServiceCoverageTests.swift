@@ -1,6 +1,7 @@
 import Darwin
 import Foundation
 import Testing
+import RescueTestSupport
 @testable import RescueCore
 
 // MARK: - DockerManager coverage

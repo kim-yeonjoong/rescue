@@ -21,13 +21,18 @@ let package = Package(
             dependencies: ["RescueCore"],
             resources: [.process("Resources")]
         ),
+        .target(
+            name: "RescueTestSupport",
+            dependencies: ["RescueCore"],
+            path: "Tests/RescueTestSupport"
+        ),
         .testTarget(
             name: "RescueCoreTests",
-            dependencies: ["RescueCore"]
+            dependencies: ["RescueCore", "RescueTestSupport"]
         ),
         .testTarget(
             name: "RescueTests",
-            dependencies: ["Rescue"]
+            dependencies: ["Rescue", "RescueTestSupport"]
         ),
     ]
 )

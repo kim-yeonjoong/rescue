@@ -37,7 +37,9 @@ public struct FrameworkDetector: Sendable {
         guard let distArg = args.first(where: { $0.contains("/dist/") }),
               let distRange = distArg.range(of: "/dist/") else { return false }
         let projectDir = String(distArg[distArg.startIndex..<distRange.lowerBound])
-        return FileManager.default.fileExists(atPath: projectDir + "/nest-cli.json")
+        let resolved = NSString(string: projectDir).standardizingPath
+        guard !resolved.contains("..") else { return false }
+        return FileManager.default.fileExists(atPath: resolved + "/nest-cli.json")
     }
 
     // MARK: - Private

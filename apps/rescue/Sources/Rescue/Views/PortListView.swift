@@ -84,7 +84,7 @@ struct PortTableHeaderView: View {
 }
 
 struct SortableColumnHeader: View {
-    let title: String
+    let title: LocalizedStringKey
     let width: CGFloat?
     let isActive: Bool
     let ascending: Bool

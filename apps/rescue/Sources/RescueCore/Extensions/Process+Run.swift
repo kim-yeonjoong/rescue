@@ -16,14 +16,6 @@ public struct ShellResult: Sendable {
 
 private let sigkillEscalationDelay: TimeInterval = 0.2
 
-private final class DataBox: @unchecked Sendable {
-    private let lock = NSLock()
-    private var _value = Data()
-    var value: Data {
-        get { lock.withLock { _value } }
-        set { lock.withLock { _value = newValue } }
-    }
-}
 
 extension Process {
     public static func run(command: String, arguments: [String], timeout: TimeInterval = 10) async -> ShellResult {
@@ -68,17 +60,19 @@ extension Process {
                         DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: timeoutWorkItem)
 
                         // Read stdout and stderr concurrently to prevent pipe buffer deadlock
-                        let stdoutBox = DataBox()
-                        let stderrBox = DataBox()
+                        let stdoutLock = OSAllocatedUnfairLock(initialState: Data())
+                        let stderrLock = OSAllocatedUnfairLock(initialState: Data())
                         let group = DispatchGroup()
                         group.enter()
                         DispatchQueue.global().async {
-                            stdoutBox.value = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
+                            let data = stdoutPipe.fileHandleForReading.readDataToEndOfFile()
+                            stdoutLock.withLock { $0 = data }
                             group.leave()
                         }
                         group.enter()
                         DispatchQueue.global().async {
-                            stderrBox.value = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+                            let data = stderrPipe.fileHandleForReading.readDataToEndOfFile()
+                            stderrLock.withLock { $0 = data }
                             group.leave()
                         }
                         // Use a bounded wait to prevent deadlock when child processes inherit pipe FDs
@@ -96,15 +90,15 @@ extension Process {
                             try? stderrPipe.fileHandleForReading.close()
                         }
 
-                        // Avoid reading DataBox when pipe timed out to prevent data race
+                        // Avoid reading lock when pipe timed out to prevent data race
                         let stdout: String
                         let stderr: String
                         if pipeTimedOut {
                             stdout = ""
                             stderr = ""
                         } else {
-                            stdout = String(data: stdoutBox.value, encoding: .utf8) ?? ""
-                            stderr = String(data: stderrBox.value, encoding: .utf8) ?? ""
+                            stdout = stdoutLock.withLock { String(data: $0, encoding: .utf8) ?? "" }
+                            stderr = stderrLock.withLock { String(data: $0, encoding: .utf8) ?? "" }
                         }
 
                         continuation.resume(returning: ShellResult(

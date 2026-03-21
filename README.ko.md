@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/platform-macOS%2013%2B-blue?style=flat-square" alt="macOS 13+" />
-  <img src="https://img.shields.io/badge/swift-5.9%2B-orange?style=flat-square" alt="Swift 5.9+" />
+  <img src="https://img.shields.io/badge/platform-macOS%2014%2B-blue?style=flat-square" alt="macOS 14+" />
+  <img src="https://img.shields.io/badge/swift-6.0%2B-orange?style=flat-square" alt="Swift 6.0+" />
   <a href="LICENSE"><img src="https://img.shields.io/github/license/kim-yeonjoong/rescue?style=flat-square" alt="MIT License" /></a>
 </p>
 
@@ -106,9 +106,9 @@ Rescue는 메뉴바에 상주합니다.
 
 ## 요구 사항
 
-- macOS 13 Ventura 이상
-- Xcode 15 이상 (소스 빌드 시)
-- Swift 5.9 이상
+- macOS 14 Sonoma 이상
+- Xcode 16 이상 (소스 빌드 시)
+- Swift 6.0 이상
 
 ## 기여
 

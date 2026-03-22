@@ -8,6 +8,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "test": "pnpm -r --if-present run test"
+    "test": "pnpm -r --if-present run test",
+    "lint": "pnpm -r --if-present run lint"
   }
 }

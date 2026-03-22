@@ -1,49 +1,35 @@
-import { BentoGrid, BentoCard } from '@/components/magicui/bento-grid'
 import { BlurFade } from '@/components/magicui/blur-fade'
-import { MagicCard } from '@/components/magicui/magic-card'
 
-const features = [
+const FEATURES = [
   {
     icon: '🔍',
-    title: 'Port Scanning',
-    description:
-      'Automatically scans all active ports and surfaces what\'s running — no manual netstat needed.',
-    span: 'md:col-span-2',
+    title: 'Process Discovery',
+    description: 'Automatically find all running dev servers on your Mac.',
+  },
+  {
+    icon: '🚦',
+    title: 'Port Monitoring',
+    description: 'See which ports are in use and by which process.',
+  },
+  {
+    icon: '⚡',
+    title: 'One-click Kill',
+    description: 'Kill any process instantly from your menu bar.',
   },
   {
     icon: '🧠',
     title: 'Framework Detection',
-    description:
-      'Recognizes 30+ frameworks and shows them by name, not just a port number.',
-    span: '',
+    description: 'Recognizes Node.js, Python, Ruby, Go, Docker and more.',
   },
   {
-    icon: '🐳',
-    title: 'Docker Support',
-    description:
-      'Detects Docker containers and shows which ports they expose alongside your native processes.',
-    span: '',
+    icon: '🍎',
+    title: 'Menu Bar Native',
+    description: 'Lives in your macOS menu bar, always accessible.',
   },
   {
-    icon: '👻',
-    title: 'Portless Processes',
-    description:
-      'Catches background processes that don\'t bind to a port so nothing slips through the cracks.',
-    span: '',
-  },
-  {
-    icon: '⚡',
-    title: 'Process Control',
-    description:
-      'Open in browser, copy URL, or kill processes directly from the menu bar without touching a terminal.',
-    span: 'md:col-span-2',
-  },
-  {
-    icon: '🔎',
-    title: 'Spotlight Search',
-    description:
-      'Filter processes instantly with keyboard-first search — find anything in milliseconds.',
-    span: '',
+    icon: '🔄',
+    title: 'Auto-start',
+    description: 'Launches automatically when you log in to macOS.',
   },
 ]
 
@@ -51,35 +37,37 @@ export default function Features() {
   return (
     <section className="px-4 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
-        <BlurFade inView delay={0}>
+        <BlurFade delay={0} inView>
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-[#f1f5f9] sm:text-4xl">
-              Everything you need to stay in control
+            <h2 className="text-3xl font-bold tracking-tight text-[#fafafa] sm:text-4xl">
+              Features
             </h2>
-            <p className="mt-4 text-[#94a3b8]">
-              Rescue gives you complete visibility into your dev environment.
+            <p className="mt-4 text-[#a1a1aa]">
+              Everything you need to stay in control of your dev environment.
             </p>
           </div>
         </BlurFade>
 
-        <BentoGrid>
-          {features.map((feature, i) => (
-            // BlurFade's motion.div is the grid item — span class goes here
-            <BlurFade key={feature.title} inView delay={0.05 * i} className={feature.span}>
-              <MagicCard className="h-full">
-                <BentoCard className="h-full border-0 bg-transparent">
-                  <div className="text-3xl mb-4">{feature.icon}</div>
-                  <h3 className="text-base font-semibold text-[#f1f5f9] mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-[#94a3b8] leading-relaxed">
-                    {feature.description}
-                  </p>
-                </BentoCard>
-              </MagicCard>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((feature, i) => (
+            <BlurFade key={feature.title} delay={0.05 * i} inView>
+              <div className="rounded-xl border border-white/10 bg-[#18181b] p-6 hover:border-white/20 transition-colors duration-200 h-full">
+                <div className="mb-4 text-3xl">{feature.icon}</div>
+                <h3 className="mb-2 text-base font-semibold text-[#fafafa]">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-[#a1a1aa] leading-relaxed">
+                  {feature.description}
+                </p>
+                <div className="mt-4">
+                  <span className="text-xs text-[#f97316] hover:underline cursor-pointer">
+                    Learn more &gt;
+                  </span>
+                </div>
+              </div>
             </BlurFade>
           ))}
-        </BentoGrid>
+        </div>
       </div>
     </section>
   )

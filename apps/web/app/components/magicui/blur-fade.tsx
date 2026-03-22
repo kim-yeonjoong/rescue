@@ -2,15 +2,15 @@ import { motion, useInView, type Variants } from 'framer-motion'
 import { useRef } from 'react'
 
 interface BlurFadeProps {
-  children: React.ReactNode
-  className?: string
-  variant?: Variants
-  duration?: number
-  delay?: number
-  yOffset?: number
-  inView?: boolean
-  inViewMargin?: string
-  blur?: string
+  readonly children: React.ReactNode
+  readonly className?: string
+  readonly variant?: Variants
+  readonly duration?: number
+  readonly delay?: number
+  readonly yOffset?: number
+  readonly inView?: boolean
+  readonly inViewMargin?: string
+  readonly blur?: string
 }
 
 export function BlurFade({

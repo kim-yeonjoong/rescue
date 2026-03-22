@@ -1,12 +1,13 @@
 import { useRef, useState } from 'react'
+
 import { cn } from '@/lib/utils'
 
 interface MagicCardProps {
-  children: React.ReactNode
-  className?: string
-  gradientSize?: number
-  gradientColor?: string
-  gradientOpacity?: number
+  readonly children: React.ReactNode
+  readonly className?: string
+  readonly gradientSize?: number
+  readonly gradientColor?: string
+  readonly gradientOpacity?: number
 }
 
 export function MagicCard({

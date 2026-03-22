@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils'
 
 interface BentoGridProps {
-  children: React.ReactNode
-  className?: string
+  readonly children: React.ReactNode
+  readonly className?: string
 }
 
 export function BentoGrid({ children, className }: BentoGridProps) {
@@ -19,8 +19,8 @@ export function BentoGrid({ children, className }: BentoGridProps) {
 }
 
 interface BentoCardProps {
-  children: React.ReactNode
-  className?: string
+  readonly children: React.ReactNode
+  readonly className?: string
 }
 
 export function BentoCard({ children, className }: BentoCardProps) {

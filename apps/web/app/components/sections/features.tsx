@@ -1,5 +1,5 @@
-import { BlurFade } from '@/components/magicui/blur-fade'
 import { BentoGrid, BentoCard } from '@/components/magicui/bento-grid'
+import { BlurFade } from '@/components/magicui/blur-fade'
 import { MagicCard } from '@/components/magicui/magic-card'
 
 const features = [

@@ -1,14 +1,14 @@
 import { cn } from '@/lib/utils'
 
 interface MarqueeProps {
-  className?: string
-  reverse?: boolean
-  pauseOnHover?: boolean
-  children?: React.ReactNode
-  vertical?: boolean
-  repeat?: number
-  duration?: string
-  gap?: string
+  readonly className?: string
+  readonly reverse?: boolean
+  readonly pauseOnHover?: boolean
+  readonly children?: React.ReactNode
+  readonly vertical?: boolean
+  readonly repeat?: number
+  readonly duration?: string
+  readonly gap?: string
 }
 
 export function Marquee({
@@ -34,8 +34,8 @@ export function Marquee({
       style={{ '--duration': duration, '--gap': gap } as React.CSSProperties}
     >
       {Array.from({ length: repeat }).map((_, i) => (
-        <div
-          key={i}
+        // eslint-disable-next-line react-x/no-array-index-key -- repeated clones have no stable identity
+        <div key={i}
           className={cn('flex shrink-0 justify-around gap-[--gap]', {
             'animate-marquee flex-row': !vertical && !reverse,
             'animate-marquee-reverse flex-row': !vertical && reverse,

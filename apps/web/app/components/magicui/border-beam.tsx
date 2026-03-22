@@ -1,14 +1,14 @@
 import { cn } from '@/lib/utils'
 
 interface BorderBeamProps {
-  className?: string
-  size?: number
-  duration?: number
-  anchor?: number
-  borderWidth?: number
-  colorFrom?: string
-  colorTo?: string
-  delay?: number
+  readonly className?: string
+  readonly size?: number
+  readonly duration?: number
+  readonly anchor?: number
+  readonly borderWidth?: number
+  readonly colorFrom?: string
+  readonly colorTo?: string
+  readonly delay?: number
 }
 
 export function BorderBeam({

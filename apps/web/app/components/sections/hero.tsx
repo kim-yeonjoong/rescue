@@ -1,6 +1,6 @@
+import { AnimatedShinyText } from '@/components/magicui/animated-shiny-text'
 import { BlurFade } from '@/components/magicui/blur-fade'
 import { BorderBeam } from '@/components/magicui/border-beam'
-import { AnimatedShinyText } from '@/components/magicui/animated-shiny-text'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 

@@ -1,8 +1,8 @@
-import { Marquee } from '@/components/magicui/marquee'
 import { BlurFade } from '@/components/magicui/blur-fade'
-import { frameworks, frameworksRow1, frameworksRow2, type Framework } from '@/lib/frameworks'
+import { Marquee } from '@/components/magicui/marquee'
+import { frameworksRow1, frameworksRow2, type Framework } from '@/lib/frameworks'
 
-function FrameworkLogo({ framework }: { framework: Framework }) {
+function FrameworkLogo({ framework }: { readonly framework: Framework }) {
   return (
     <div className="flex flex-col items-center gap-2 px-4">
       <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/8 bg-[#0f2040] p-2.5 transition-colors hover:border-white/16">

@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils'
 
 interface AnimatedShinyTextProps {
-  children: React.ReactNode
-  className?: string
-  shimmerWidth?: number
+  readonly children: React.ReactNode
+  readonly className?: string
+  readonly shimmerWidth?: number
 }
 
 export function AnimatedShinyText({

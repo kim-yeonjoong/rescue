@@ -8,8 +8,6 @@
 "Launch at Login" = "로그인 시 실행";
 "Start Rescue automatically when you log in" = "로그인하면 Rescue가 자동으로 실행돼요";
 "Needs a signed app bundle" = "서명된 앱에서만 사용할 수 있어요";
-"Port Notifications" = "포트 알림";
-"Alerts you when a new port opens" = "새 포트가 열리면 알림을 보내드려요";
 "Refresh interval" = "새로 고침 간격";
 "How often to check for open ports" = "이 간격으로 열린 포트를 확인해요";
 "Language" = "언어";

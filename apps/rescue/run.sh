@@ -1,6 +1,6 @@
 #!/bin/bash
 # Build Rescue and run it as a proper .app bundle.
-# UNUserNotificationCenter requires a bundle ID, so swift run alone won't work.
+# swift run alone won't work without a bundle ID.
 
 set -e
 
@@ -42,7 +42,7 @@ for lproj_dir in "$BUILD_DIR/Rescue_Rescue.bundle"/*.lproj; do
     fi
 done
 
-# Create Info.plist with bundle ID required for notifications
+# Create Info.plist with bundle ID
 cat > "$CONTENTS_DIR/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -66,8 +66,6 @@ cat > "$CONTENTS_DIR/Info.plist" << 'EOF'
     <true/>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
-    <key>NSUserNotificationAlertStyle</key>
-    <string>alert</string>
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
 </dict>

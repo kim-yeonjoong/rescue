@@ -87,7 +87,8 @@ struct RescueApp: App {
             if portListVM.enricher.portlessRoutes.isEmpty {
                 height += PanelLayout.tableHeader
             } else {
-                height += PanelLayout.tableHeader + CGFloat(portListVM.filteredPortlessRoutes.count) * PanelLayout.rowHeight
+                let routeCount = CGFloat(portListVM.filteredPortlessRoutes.count)
+                height += PanelLayout.tableHeader + routeCount * PanelLayout.rowHeight
             }
         } else if portlessEnabled {
             height += PanelLayout.portlessInstall

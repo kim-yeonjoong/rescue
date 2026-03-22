@@ -58,37 +58,51 @@ struct RescueApp: App {
         appLanguage == "system" ? .autoupdatingCurrent : Locale(identifier: appLanguage)
     }
 
+    private enum PanelLayout {
+        static let baseHeight: CGFloat = 120
+        static let rowHeight: CGFloat = 32
+        static let sectionHeader: CGFloat = 50
+        static let tableHeader: CGFloat = 30
+        static let portsLoading: CGFloat = 100
+        static let portsEmpty: CGFloat = 120
+        static let portlessInstall: CGFloat = 80
+        static let dockerSectionHeader: CGFloat = 80 // section title + table header
+        static let dockerNotRunning: CGFloat = 60
+        static let minHeight: CGFloat = 200
+        static let maxHeight: CGFloat = 580
+    }
+
     private var panelHeight: CGFloat {
-        var height: CGFloat = 120 // header + search + dividers + footer
+        var height = PanelLayout.baseHeight
 
         let portCount = portListVM.filteredPorts.count
         if portListVM.ports.isEmpty {
-            height += portListVM.isLoading ? 100 : 120
+            height += portListVM.isLoading ? PanelLayout.portsLoading : PanelLayout.portsEmpty
         } else {
-            height += 30 + CGFloat(portCount) * 32
+            height += PanelLayout.tableHeader + CGFloat(portCount) * PanelLayout.rowHeight
         }
 
         if portlessEnabled && portListVM.enricher.isPortlessAvailable {
-            height += 50
+            height += PanelLayout.sectionHeader
             if portListVM.enricher.portlessRoutes.isEmpty {
-                height += 30
+                height += PanelLayout.tableHeader
             } else {
-                height += 30 + CGFloat(portListVM.filteredPortlessRoutes.count) * 32
+                height += PanelLayout.tableHeader + CGFloat(portListVM.filteredPortlessRoutes.count) * PanelLayout.rowHeight
             }
         } else if portlessEnabled {
-            height += 80
+            height += PanelLayout.portlessInstall
         }
 
         if dockerEnabled {
             if dockerVM.isDockerAvailable {
                 let dockerRows = dockerVM.filteredContainers.reduce(0) { $0 + max($1.ports.count, 1) }
-                height += 80 + CGFloat(dockerRows) * 32
+                height += PanelLayout.dockerSectionHeader + CGFloat(dockerRows) * PanelLayout.rowHeight
             } else if !dockerVM.isLoading {
-                height += 60
+                height += PanelLayout.dockerNotRunning
             }
         }
 
-        return min(max(height, 200), 580)
+        return min(max(height, PanelLayout.minHeight), PanelLayout.maxHeight)
     }
 
     private static let statusBarIcon: NSImage = {

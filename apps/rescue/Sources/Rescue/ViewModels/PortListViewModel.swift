@@ -35,12 +35,11 @@ final class PortListViewModel {
     var isKilling: Set<String> = []
     let enricher: PortEnricher
     let actionQueue: ActionResultQueue
+    let actionHandler: PortActionHandler
     private let shell: any ShellExecuting
     private let scanner: PortScanner
-    private let terminator: ProcessTerminator
     private let uptimeTracker: UptimeTracker
     private let notificationManager: PortNotificationManager
-    private let urlOpener: (URL) -> Void
     private var pollingTask: Task<Void, Never>?
     private var isRefreshing = false
 
@@ -65,10 +64,13 @@ final class PortListViewModel {
     ) {
         self.shell = shell
         self.scanner = scanner
-        self.terminator = terminator
         self.enricher = enricher
         self.actionQueue = actionQueue
-        self.urlOpener = urlOpener
+        self.actionHandler = PortActionHandler(
+            actionQueue: actionQueue,
+            terminator: terminator,
+            urlOpener: urlOpener
+        )
         self.uptimeTracker = UptimeTracker(shell: shell)
         self.notificationManager = PortNotificationManager()
     }
@@ -129,32 +131,20 @@ final class PortListViewModel {
     func killProcess(entry: PortEntry) async {
         isKilling.insert(entry.id)
         defer { isKilling.remove(entry.id) }
-        let success = await terminator.terminate(pid: entry.pid)
-        actionQueue.push(ActionResult(
-            message: success ? "Stopped :\(entry.port)" : "Couldn't stop the process",
-            isError: !success
-        ))
+        _ = await actionHandler.killProcess(entry: entry)
         await refresh()
     }
 
     func openInBrowser(entry: PortEntry) {
-        let urlString = entry.portlessURL ?? "http://localhost:\(entry.port)"
-        guard let url = URL(string: urlString),
-              url.scheme == "http" || url.scheme == "https" else { return }
-        urlOpener(url)
+        actionHandler.openInBrowser(entry: entry)
     }
 
     func copyPort(_ entry: PortEntry) {
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(String(entry.port), forType: .string)
-        actionQueue.push(ActionResult(message: "Port copied", isError: false))
+        actionHandler.copyPort(entry)
     }
 
     func copyURL(_ entry: PortEntry) {
-        let urlString = entry.portlessURL ?? "http://localhost:\(entry.port)"
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(urlString, forType: .string)
-        actionQueue.push(ActionResult(message: "URL copied", isError: false))
+        actionHandler.copyURL(entry)
     }
 
     var filteredPorts: [PortEntry] {

@@ -1,4 +1,5 @@
 import Testing
+import RescueTestSupport
 @testable import RescueCore
 
 @Suite struct FrameworkDetectorTests {

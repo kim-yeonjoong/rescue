@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import RescueTestSupport
 @testable import Rescue
 @testable import RescueCore
 
@@ -80,8 +81,8 @@ struct PortNotificationManagerTests {
 @Suite @MainActor
 struct UptimeTrackerTests {
 
-    private func makeTracker() -> (UptimeTracker, MockShellExecutorForRescueTests) {
-        let mock = MockShellExecutorForRescueTests()
+    private func makeTracker() -> (UptimeTracker, MockShellExecutor) {
+        let mock = MockShellExecutor()
         let tracker = UptimeTracker(shell: mock)
         return (tracker, mock)
     }

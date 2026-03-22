@@ -13,7 +13,8 @@ struct PortlessSectionView: View {
                         .font(.headline)
                     Spacer()
                     if !viewModel.enricher.portlessRoutes.isEmpty {
-                        Text("\(viewModel.enricher.portlessRoutes.count) route\(viewModel.enricher.portlessRoutes.count == 1 ? "" : "s")")
+                        let count = viewModel.enricher.portlessRoutes.count
+                        Text("\(count) route\(count == 1 ? "" : "s")")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }

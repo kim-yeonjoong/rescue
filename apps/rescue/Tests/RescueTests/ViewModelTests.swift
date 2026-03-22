@@ -1,26 +1,8 @@
 import Testing
 import Foundation
+import RescueTestSupport
 @testable import Rescue
 @testable import RescueCore
-
-// MARK: - Local Mock
-// Duplicated from RescueCoreTests/Mocks — test targets cannot share sources
-actor MockShellExecutorForRescueTests: ShellExecuting {
-    private var responses: [String: ShellResult] = [:]
-
-    func register(command: String, result: ShellResult) {
-        responses[command] = result
-    }
-
-    func run(command: String, arguments: [String]) async -> ShellResult {
-        let key = ([command] + arguments).joined(separator: " ")
-        return responses[key] ?? ShellResult(
-            exitCode: 1,
-            stdout: "",
-            stderr: "No mock registered for: \(key)"
-        )
-    }
-}
 
 // MARK: - PortListViewModel Tests
 
@@ -28,7 +10,7 @@ actor MockShellExecutorForRescueTests: ShellExecuting {
 struct PortListViewModelTests {
 
     private func makeViewModel() -> PortListViewModel {
-        let mock = MockShellExecutorForRescueTests()
+        let mock = MockShellExecutor()
         let shell = mock as any ShellExecuting
         let scanner = PortScanner(shell: shell)
         let detector = FrameworkDetector(shell: shell)
@@ -155,7 +137,7 @@ struct PortListViewModelTests {
 struct DockerViewModelTests {
 
     private func makeViewModel() -> DockerViewModel {
-        let mock = MockShellExecutorForRescueTests()
+        let mock = MockShellExecutor()
         let manager = DockerManager(shell: mock)
         return DockerViewModel(manager: manager, actionQueue: ActionResultQueue())
     }

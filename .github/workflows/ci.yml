@@ -18,5 +18,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: apps/rescue/.build
+          key: ${{ runner.os }}-spm-${{ hashFiles('apps/rescue/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
       - name: Run tests
         run: cd apps/rescue && swift test

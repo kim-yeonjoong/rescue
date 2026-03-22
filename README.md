@@ -13,8 +13,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/platform-macOS%2013%2B-blue?style=flat-square" alt="macOS 13+" />
-  <img src="https://img.shields.io/badge/swift-5.9%2B-orange?style=flat-square" alt="Swift 5.9+" />
+  <img src="https://img.shields.io/badge/platform-macOS%2014%2B-blue?style=flat-square" alt="macOS 14+" />
+  <img src="https://img.shields.io/badge/swift-6.0%2B-orange?style=flat-square" alt="Swift 6.0+" />
   <a href="LICENSE"><img src="https://img.shields.io/github/license/kim-yeonjoong/rescue?style=flat-square" alt="MIT License" /></a>
 </p>
 
@@ -106,9 +106,9 @@ Default hidden processes: `code helper`, `cursor helper`, `webstorm`, `intellij`
 
 ## Requirements
 
-- macOS 13 Ventura or later
-- Xcode 15 or later (to build from source)
-- Swift 5.9 or later
+- macOS 14 Sonoma or later
+- Xcode 16 or later (to build from source)
+- Swift 6.0 or later
 
 ## Contributing
 

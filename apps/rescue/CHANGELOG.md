@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.5...rescue-v0.1.6) (2026-03-22)
+
+
+### Bug Fixes
+
+* **rescue:** 새로고침 버튼 race condition 방지 ([#9](https://github.com/kim-yeonjoong/rescue/issues/9)) ([d34acdd](https://github.com/kim-yeonjoong/rescue/commit/d34acdd93353b3e23f0e0a88d01a2eb6a4d91437))
+
 ## [0.1.5](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.4...rescue-v0.1.5) (2026-03-22)
 
 

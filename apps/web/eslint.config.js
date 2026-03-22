@@ -55,7 +55,7 @@ export default tseslint.config(
       // React Refresh
       "react-refresh/only-export-components": [
         "warn",
-        { allowConstantExport: true },
+        { allowConstantExport: true, extraHOCs: ["createFileRoute"] },
       ],
 
       // JSX A11y

@@ -69,8 +69,7 @@ struct PortRowView: View {
                     Button {
                         viewModel.openInBrowser(entry: entry)
                     } label: {
-                        Image(systemName: "arrow.up.right.square")
-                            .font(.system(size: 12))
+                        LucideIconView(.externalLink, size: 12)
                             .foregroundStyle(isBrowserHovered ? Color.accentColor : Color.secondary)
                     }
                     .buttonStyle(.plain)
@@ -114,8 +113,7 @@ struct PortRowView: View {
                             if !Task.isCancelled { pendingKill = false }
                         }
                     } label: {
-                        Image(systemName: "trash")
-                            .font(.system(size: 12))
+                        LucideIconView(.trash2, size: 12)
                             .foregroundStyle(isStopHovered ? Color.red : Color.secondary)
                     }
                     .buttonStyle(.plain)

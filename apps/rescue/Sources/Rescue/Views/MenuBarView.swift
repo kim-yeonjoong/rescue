@@ -7,6 +7,8 @@ struct MenuBarView: View {
     let actionQueue: ActionResultQueue
     @State private var sharedSearchText = ""
     @State private var searchDebounceTask: Task<Void, Never>?
+    @State private var isManualRefreshing = false
+    @State private var refreshRotation: Double = 0
     @AppStorage(AppStorageKey.pollingInterval) private var pollingInterval: Double = Constants.defaultPollingInterval
     @AppStorage(AppStorageKey.portNotificationsEnabled) private var portNotificationsEnabled: Bool = true
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
@@ -19,8 +21,7 @@ struct MenuBarView: View {
             // Action result banner
             if let result = actionQueue.current {
                 HStack(spacing: 6) {
-                    Image(systemName: result.isError ? "exclamationmark.circle" : "checkmark.circle")
-                        .font(.caption)
+                    LucideIconView(result.isError ? .circleAlert : .circleCheck, size: 12)
                     Text(result.message)
                         .font(.caption)
                 }
@@ -45,6 +46,25 @@ struct MenuBarView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                Button {
+                    guard !isManualRefreshing else { return }
+                    Task {
+                        isManualRefreshing = true
+                        defer { isManualRefreshing = false }
+                        withAnimation(.linear(duration: 0.5)) {
+                            refreshRotation += 360
+                        }
+                        await portListVM.refresh()
+                        if dockerEnabled { await dockerVM.refresh() }
+                    }
+                } label: {
+                    LucideIconView(.refreshCw, size: 11)
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(refreshRotation))
+                }
+                .buttonStyle(.plain)
+                .disabled(isManualRefreshing)
+                .help("Refresh now")
             }
             .padding(.horizontal)
             .padding(.top, 12)
@@ -52,8 +72,7 @@ struct MenuBarView: View {
 
             // Search
             HStack(spacing: 6) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 11))
+                LucideIconView(.search, size: 11)
                     .foregroundStyle(.tertiary)
                 TextField("Search ports or containers…", text: $sharedSearchText)
                     .textFieldStyle(.plain)
@@ -64,8 +83,7 @@ struct MenuBarView: View {
                         portListVM.searchText = ""
                         dockerVM.searchText = ""
                     } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 11))
+                        LucideIconView(.xCircle, size: 11)
                             .foregroundStyle(.tertiary)
                     }
                     .buttonStyle(.plain)
@@ -108,7 +126,7 @@ struct MenuBarView: View {
                     openWindow(id: "settings")
                     NSApp.activate(ignoringOtherApps: true)
                 } label: {
-                    Label("Settings", systemImage: "gearshape")
+                    Label { Text("Settings") } icon: { LucideIconView(.settings) }
                 }
                 .buttonStyle(.plain)
 
@@ -117,7 +135,7 @@ struct MenuBarView: View {
                 Button {
                     NSApplication.shared.terminate(nil)
                 } label: {
-                    Label("Quit", systemImage: "power")
+                    Label { Text("Quit") } icon: { LucideIconView(.power) }
                 }
                 .buttonStyle(.plain)
             }

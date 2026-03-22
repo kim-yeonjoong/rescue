@@ -57,7 +57,7 @@ struct PortlessInstallView: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 6) {
-                Image(systemName: "link")
+                LucideIconView(.link)
                     .foregroundStyle(.secondary)
                 Text("portless isn't installed")
                     .font(.caption)
@@ -80,8 +80,7 @@ struct PortlessInstallView: View {
                     Text(showCopied ? "Copied!" : "brew install portless")
                         .font(.system(size: 10, design: .monospaced))
                     if !showCopied {
-                        Image(systemName: "doc.on.doc")
-                            .font(.system(size: 10))
+                        LucideIconView(.copy, size: 10)
                     }
                 }
                 .padding(.horizontal, 8)
@@ -180,8 +179,7 @@ struct PortlessRowView: View {
                         NSWorkspace.shared.open(url)
                     }
                 } label: {
-                    Image(systemName: "arrow.up.right.square")
-                        .font(.system(size: 12))
+                    LucideIconView(.externalLink, size: 12)
                         .foregroundStyle(isBrowserHovered ? Color.accentColor : Color.secondary)
                 }
                 .buttonStyle(.plain)
@@ -192,8 +190,7 @@ struct PortlessRowView: View {
                 Button {
                     copyURL()
                 } label: {
-                    Image(systemName: "doc.on.doc")
-                        .font(.system(size: 12))
+                    LucideIconView(.copy, size: 12)
                         .foregroundStyle(isCopyHovered ? Color.accentColor : Color.secondary)
                 }
                 .buttonStyle(.plain)

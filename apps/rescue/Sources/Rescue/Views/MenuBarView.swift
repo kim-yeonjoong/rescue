@@ -54,8 +54,8 @@ struct MenuBarView: View {
                     }
                     Task {
                         defer { isManualRefreshing = false }
-                        await portListVM.refresh()
                         if dockerEnabled { await dockerVM.refresh() }
+                        await portListVM.refresh()
                     }
                 } label: {
                     LucideIconView(.refreshCw, size: 11)

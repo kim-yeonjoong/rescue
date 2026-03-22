@@ -143,6 +143,7 @@ struct SettingsView: View {
                         TextField("", text: $newIgnoreTerm, prompt: Text("e.g. node, 5432"))
                             .textFieldStyle(.roundedBorder)
                             .onSubmit { addTerm() }
+                        let isNewIgnoreTermEmpty = newIgnoreTerm.trimmingCharacters(in: .whitespaces).isEmpty
                         Button {
                             addTerm()
                         } label: {
@@ -150,11 +151,11 @@ struct SettingsView: View {
                                 .font(.system(size: 11, weight: .medium))
                                 .foregroundStyle(.white)
                                 .frame(width: 22, height: 22)
-                                .background(newIgnoreTerm.trimmingCharacters(in: .whitespaces).isEmpty ? Color.secondary : Color.accentColor)
+                                .background(isNewIgnoreTermEmpty ? Color.secondary : Color.accentColor)
                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                         }
                         .buttonStyle(.plain)
-                        .disabled(newIgnoreTerm.trimmingCharacters(in: .whitespaces).isEmpty)
+                        .disabled(isNewIgnoreTermEmpty)
                     }
                 }
 

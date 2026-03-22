@@ -120,7 +120,7 @@ jobs:
           TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
         run: |
           EXISTING=$(gh release view "$TAG_NAME" --json body -q .body)
-          read -r -d '' FOOTER << 'EOF'
+          FOOTER=$(cat << 'EOF'
 
           ---
 
@@ -134,4 +134,5 @@ jobs:
              ```
              Or go to **System Settings → Privacy & Security → Security** and click **Open Anyway**.
           EOF
+          )
           gh release edit "$TAG_NAME" --notes "${EXISTING}${FOOTER}"

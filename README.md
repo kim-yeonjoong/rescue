@@ -36,6 +36,16 @@ Rescue surfaces them all — so you can deal with them before they become a prob
 
 ## Installation
 
+### Download
+
+1. Download `Rescue-macos.zip` from the [latest release](https://github.com/kim-yeonjoong/rescue/releases/latest)
+2. Unzip and move `Rescue.app` to `/Applications`
+3. On first launch, macOS will block the app because it is not signed with an Apple Developer ID. To allow it:
+   ```bash
+   xattr -d com.apple.quarantine /Applications/Rescue.app
+   ```
+   Or go to **System Settings → Privacy & Security → Security** and click **Open Anyway**.
+
 ### Build from source
 
 ```bash

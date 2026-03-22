@@ -36,6 +36,16 @@ Rescue가 그것들을 찾아내 한곳에 보여줍니다. 문제가 되기 전
 
 ## 설치
 
+### 다운로드
+
+1. [최신 릴리스](https://github.com/kim-yeonjoong/rescue/releases/latest)에서 `Rescue-macos.zip`을 다운로드합니다
+2. 압축을 풀고 `Rescue.app`을 `/Applications`(응용 프로그램)으로 이동합니다
+3. 처음 실행 시 Apple Developer ID로 서명되지 않아 macOS가 앱을 차단합니다. 다음 중 한 가지로 허용할 수 있습니다:
+   ```bash
+   xattr -d com.apple.quarantine /Applications/Rescue.app
+   ```
+   또는 **시스템 설정 → 개인정보 보호 및 보안 → 보안**에서 **그래도 열기**를 클릭합니다.
+
 ### 소스에서 빌드
 
 ```bash

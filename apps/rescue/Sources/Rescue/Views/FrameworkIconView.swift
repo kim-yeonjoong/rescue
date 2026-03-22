@@ -22,7 +22,7 @@ struct FrameworkIconView: View {
     }
 
     private func loadIcon() {
-        if let url = Bundle.module.url(forResource: framework.iconResource, withExtension: "svg"),
+        if let url = Bundle.rescueResources.url(forResource: framework.iconResource, withExtension: "svg"),
            let image = NSImage(contentsOf: url) {
             image.isTemplate = true
             nsImage = image

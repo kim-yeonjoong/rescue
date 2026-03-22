@@ -113,3 +113,25 @@ jobs:
           cd apps/rescue
           ditto -c -k --keepParent Rescue.app Rescue-macos.zip
           gh release upload "$TAG_NAME" Rescue-macos.zip
+
+      - name: Append install instructions to release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          EXISTING=$(gh release view "$TAG_NAME" --json body -q .body)
+          read -r -d '' FOOTER << 'EOF'
+
+          ---
+
+          ## Installation
+
+          1. Download **Rescue-macos.zip** above and unzip
+          2. Move `Rescue.app` to `/Applications`
+          3. On first launch, macOS will block the app. To allow it, run:
+             ```
+             xattr -d com.apple.quarantine /Applications/Rescue.app
+             ```
+             Or go to **System Settings → Privacy & Security → Security** and click **Open Anyway**.
+          EOF
+          gh release edit "$TAG_NAME" --notes "${EXISTING}${FOOTER}"

@@ -10,8 +10,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, @preconcurrency UNUser
         NSApp.setActivationPolicy(.accessory)
         let center = UNUserNotificationCenter.current()
         center.delegate = self
-        center.requestAuthorization(options: [.alert, .sound]) { _, error in
-            if let error { RescueLogger.app.error("Notification authorization failed: \(error)") }
+        Task {
+            do {
+                try await center.requestAuthorization(options: [.alert, .sound])
+            } catch {
+                RescueLogger.app.error("Notification authorization failed: \(error)")
+            }
         }
     }
 

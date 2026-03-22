@@ -134,21 +134,52 @@ struct SettingsView: View {
     private var filtersTab: some View {
         Form {
             Section {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Add a process name or port number to hide from the list.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    HStack(spacing: 6) {
+                        TextField("", text: $newIgnoreTerm, prompt: Text("e.g. node, 5432"))
+                            .textFieldStyle(.roundedBorder)
+                            .onSubmit { addTerm() }
+                        let isNewIgnoreTermEmpty = newIgnoreTerm.trimmingCharacters(in: .whitespaces).isEmpty
+                        Button {
+                            addTerm()
+                        } label: {
+                            Image(systemName: "plus")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundStyle(.white)
+                                .frame(width: 22, height: 22)
+                                .background(isNewIgnoreTermEmpty ? Color.secondary : Color.accentColor)
+                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(isNewIgnoreTermEmpty)
+                    }
+                }
+
                 if ignoredList.isEmpty {
                     Text("No hidden items yet")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 4)
                 } else {
                     ForEach(ignoredList, id: \.self) { term in
-                        HStack {
+                        HStack(spacing: 6) {
                             Text(term)
                                 .font(.system(.caption, design: .monospaced))
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 3)
+                                .background(Color.primary.opacity(0.06))
+                                .clipShape(Capsule())
                             Spacer()
                             Button {
-                                removeTerm(term)
+                                withAnimation { removeTerm(term) }
                             } label: {
-                                LucideIconView(.circleMinus)
-                                    .foregroundStyle(.red)
+                                LucideIconView(.circleMinus, size: 14)
+                                    .foregroundStyle(.red.opacity(0.7))
                             }
                             .buttonStyle(.plain)
                         }
@@ -156,22 +187,10 @@ struct SettingsView: View {
                 }
             } header: {
                 Text("Processes / Ports to Hide")
-            } footer: {
-                Text("Add a process (e.g. node) or port (e.g. 5432) to hide from the list.")
-                    .font(.caption2)
-            }
-
-            Section {
-                HStack(spacing: 8) {
-                    TextField("Process name or port", text: $newIgnoreTerm)
-                        .textFieldStyle(.roundedBorder)
-                        .onSubmit { addTerm() }
-                    Button("Add") { addTerm() }
-                        .disabled(newIgnoreTerm.trimmingCharacters(in: .whitespaces).isEmpty)
-                }
             }
         }
         .formStyle(.grouped)
+        .labelsHidden()
     }
 
     private func addTerm() {

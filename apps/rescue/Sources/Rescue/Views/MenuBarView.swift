@@ -7,6 +7,7 @@ struct MenuBarView: View {
     let actionQueue: ActionResultQueue
     @State private var sharedSearchText = ""
     @State private var searchDebounceTask: Task<Void, Never>?
+    @State private var isManualRefreshing = false
     @AppStorage(AppStorageKey.pollingInterval) private var pollingInterval: Double = Constants.defaultPollingInterval
     @AppStorage(AppStorageKey.portNotificationsEnabled) private var portNotificationsEnabled: Bool = true
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
@@ -45,6 +46,23 @@ struct MenuBarView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                Button {
+                    guard !isManualRefreshing else { return }
+                    Task {
+                        isManualRefreshing = true
+                        await portListVM.refresh()
+                        if dockerEnabled { await dockerVM.refresh() }
+                        isManualRefreshing = false
+                    }
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.secondary)
+                        .symbolEffect(.pulse, isActive: isManualRefreshing)
+                }
+                .buttonStyle(.plain)
+                .disabled(isManualRefreshing)
+                .help("Refresh now")
             }
             .padding(.horizontal)
             .padding(.top, 12)

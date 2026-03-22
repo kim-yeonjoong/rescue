@@ -51,9 +51,44 @@ struct RescueApp: App {
     }
 
     @AppStorage("appLanguage") private var appLanguage: String = "system"
+    @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
+    @AppStorage(AppStorageKey.portlessEnabled) private var portlessEnabled: Bool = true
 
     private var appLocale: Locale {
         appLanguage == "system" ? .autoupdatingCurrent : Locale(identifier: appLanguage)
+    }
+
+    private var panelHeight: CGFloat {
+        var height: CGFloat = 120 // header + search + dividers + footer
+
+        let portCount = portListVM.filteredPorts.count
+        if portListVM.ports.isEmpty {
+            height += portListVM.isLoading ? 100 : 120
+        } else {
+            height += 30 + CGFloat(portCount) * 32
+        }
+
+        if portlessEnabled && portListVM.enricher.isPortlessAvailable {
+            height += 50
+            if portListVM.enricher.portlessRoutes.isEmpty {
+                height += 30
+            } else {
+                height += 30 + CGFloat(portListVM.filteredPortlessRoutes.count) * 32
+            }
+        } else if portlessEnabled {
+            height += 80
+        }
+
+        if dockerEnabled {
+            if dockerVM.isDockerAvailable {
+                let dockerRows = dockerVM.filteredContainers.reduce(0) { $0 + max($1.ports.count, 1) }
+                height += 80 + CGFloat(dockerRows) * 32
+            } else if !dockerVM.isLoading {
+                height += 60
+            }
+        }
+
+        return min(max(height, 200), 580)
     }
 
     private static let statusBarIcon: NSImage = {
@@ -70,7 +105,7 @@ struct RescueApp: App {
     var body: some Scene {
         MenuBarExtra {
             MenuBarView(portListVM: portListVM, dockerVM: dockerVM, actionQueue: actionQueue)
-                .frame(width: 380, height: 500)
+                .frame(width: 380, height: panelHeight)
                 .environment(\.locale, appLocale)
         } label: {
             let count = portListVM.ports.count

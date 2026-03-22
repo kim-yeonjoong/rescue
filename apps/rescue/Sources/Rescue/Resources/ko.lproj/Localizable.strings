@@ -42,6 +42,10 @@
 
 /* Port row */
 "Copied" = "복사했어요";
+"Port copied" = "포트 번호를 복사했어요";
+"URL copied" = "URL을 복사했어요";
+"Stopped :%lld" = ":%lld 종료했어요";
+"Couldn't stop the process" = "프로세스를 종료할 수 없어요";
 "Open in Browser" = "브라우저로 열기";
 "Confirm Stop" = "종료하기";
 "Stop Process" = "프로세스 종료하기";

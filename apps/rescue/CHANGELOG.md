@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.4...rescue-v0.1.5) (2026-03-22)
+
+
+### Bug Fixes
+
+* **rescue:** requestAuthorization 콜백을 async/await로 변경하여 크래시 수정 ([#7](https://github.com/kim-yeonjoong/rescue/issues/7)) ([7f1f116](https://github.com/kim-yeonjoong/rescue/commit/7f1f1160847f42c17fd8e2329e56b4c25f52441d))
+
 ## [0.1.4](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.3...rescue-v0.1.4) (2026-03-22)
 
 

@@ -3,8 +3,7 @@ import SwiftUI
 struct EmptyStateView: View {
     var body: some View {
         VStack(spacing: 12) {
-            Image(systemName: "network.slash")
-                .font(.system(size: 32))
+            LucideIconView(.unplug, size: 32)
                 .foregroundStyle(.secondary)
                 .opacity(0.6)
             Text("No open ports")

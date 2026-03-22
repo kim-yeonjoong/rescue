@@ -49,7 +49,7 @@ struct DockerSectionView: View {
         } else {
             VStack(spacing: 4) {
                 HStack(spacing: 6) {
-                    Image(systemName: "shippingbox")
+                    LucideIconView(.packageBox)
                         .foregroundStyle(.secondary)
                     Text("Docker isn't running")
                         .font(.caption)

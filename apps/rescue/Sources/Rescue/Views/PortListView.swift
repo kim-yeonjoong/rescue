@@ -99,8 +99,7 @@ struct SortableColumnHeader: View {
                     .font(.caption)
                     .fontWeight(isActive ? .semibold : .regular)
                     .foregroundStyle(isActive ? .primary : .secondary)
-                Image(systemName: ascending ? "chevron.up" : "chevron.down")
-                    .font(.system(size: 8, weight: .bold))
+                LucideIconView(ascending ? .chevronUp : .chevronDown, size: 8)
                     .foregroundStyle(isActive ? Color.primary : Color.primary.opacity(0.25))
             }
             .frame(width: width, alignment: .leading)

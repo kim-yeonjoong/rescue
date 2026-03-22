@@ -32,22 +32,22 @@ struct SettingsView: View {
         TabView {
             generalTab
                 .tabItem {
-                    Label("General", systemImage: "gearshape")
+                    Label { Text("General") } icon: { LucideIconView(.settings) }
                 }
 
             filtersTab
                 .tabItem {
-                    Label("Filters", systemImage: "line.3.horizontal.decrease.circle")
+                    Label { Text("Filters") } icon: { LucideIconView(.slidersHorizontal) }
                 }
 
             integrationsTab
                 .tabItem {
-                    Label("Integrations", systemImage: "puzzlepiece")
+                    Label { Text("Integrations") } icon: { LucideIconView(.puzzle) }
                 }
 
             aboutTab
                 .tabItem {
-                    Label("About", systemImage: "info.circle")
+                    Label { Text("About") } icon: { LucideIconView(.info) }
                 }
         }
         .frame(width: 500, height: 340)
@@ -147,7 +147,7 @@ struct SettingsView: View {
                             Button {
                                 removeTerm(term)
                             } label: {
-                                Image(systemName: "minus.circle.fill")
+                                LucideIconView(.circleMinus)
                                     .foregroundStyle(.red)
                             }
                             .buttonStyle(.plain)
@@ -228,8 +228,7 @@ struct SettingsView: View {
         VStack(spacing: 16) {
             Spacer()
 
-            Image(systemName: "network")
-                .font(.system(size: 48))
+            LucideIconView(.globe, size: 48)
                 .foregroundStyle(.secondary)
 
             VStack(spacing: 4) {
@@ -253,6 +252,9 @@ struct SettingsView: View {
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                 Text("Icons by Simple Icons (CC0 1.0)")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                Text("UI icons by Lucide (ISC)")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
             }

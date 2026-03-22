@@ -80,8 +80,7 @@ struct DockerRowView: View {
                             guard !viewModel.operatingContainers.contains(container.id) else { return }
                             Task { await viewModel.start(container) }
                         } label: {
-                            Image(systemName: "play")
-                                .font(.system(size: 12))
+                            LucideIconView(.play, size: 12)
                                 .foregroundStyle(isPlayHovered ? Color.green : Color.secondary)
                         }
                         .buttonStyle(.plain)
@@ -95,8 +94,7 @@ struct DockerRowView: View {
                             guard !viewModel.operatingContainers.contains(container.id) else { return }
                             Task { await viewModel.stop(container) }
                         } label: {
-                            Image(systemName: "stop")
-                                .font(.system(size: 12))
+                            LucideIconView(.square, size: 12)
                                 .foregroundStyle(isStopHovered ? Color.red : Color.secondary)
                         }
                         .buttonStyle(.plain)
@@ -108,8 +106,7 @@ struct DockerRowView: View {
                             guard !viewModel.operatingContainers.contains(container.id) else { return }
                             Task { await viewModel.restart(container) }
                         } label: {
-                            Image(systemName: "arrow.clockwise")
-                                .font(.system(size: 12))
+                            LucideIconView(.refreshCw, size: 12)
                                 .foregroundStyle(isRestartHovered ? Color.accentColor : Color.secondary)
                         }
                         .buttonStyle(.plain)

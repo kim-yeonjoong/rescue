@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.6...rescue-v0.1.7) (2026-03-22)
+
+
+### Bug Fixes
+
+* **rescue:** settings filters 탭 UI 개선 ([#13](https://github.com/kim-yeonjoong/rescue/issues/13)) ([bc26331](https://github.com/kim-yeonjoong/rescue/commit/bc2633152139495fc96f60054e10fdd4dc752300))
+
 ## [0.1.6](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.5...rescue-v0.1.6) (2026-03-22)
 
 

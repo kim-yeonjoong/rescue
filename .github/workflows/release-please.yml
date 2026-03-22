@@ -23,7 +23,7 @@ jobs:
   build-and-release:
     needs: release-please
     if: needs.release-please.outputs.releases_created == 'true'
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v6
 

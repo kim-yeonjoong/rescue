@@ -6,7 +6,7 @@ on:
 
 jobs:
   lint:
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v6
       - name: Install SwiftLint
@@ -15,7 +15,7 @@ jobs:
         run: cd apps/rescue && swiftlint lint --strict
 
   test:
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v6
       - uses: actions/cache@v5

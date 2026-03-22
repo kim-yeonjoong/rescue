@@ -4,24 +4,33 @@ const TWITTER_URL = 'https://twitter.com/pointnemo'
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-white/10">
-      <div className="mx-auto max-w-6xl px-4 py-10">
+    <footer className="relative overflow-hidden">
+      <div className="mx-auto max-w-[960px] border-x border-t border-white/10 px-8 py-8">
         {/* Top row */}
         <div className="flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5">
-            <img src="/logo.svg" alt="Rescue" className="h-6 w-6" />
-            <span className="text-sm font-semibold text-[#fafafa]">Rescue</span>
+          <a href="/" className="flex items-center gap-2">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 20 20"
+              fill="none"
+              className="text-white/60"
+              aria-hidden="true"
+            >
+              <text x="0" y="14" fontSize="12" fontFamily="monospace" fill="currentColor">&gt;_</text>
+            </svg>
+            <span className="text-sm font-semibold text-white/60">Rescue</span>
           </a>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <a
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-[#a1a1aa] hover:text-[#fafafa] transition-colors"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 hover:text-white transition-colors"
             >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path
                   fillRule="evenodd"
                   d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
@@ -29,41 +38,43 @@ export default function Footer() {
                 />
               </svg>
             </a>
-
             <a
               href={TWITTER_URL}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Twitter"
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-[#a1a1aa] hover:text-[#fafafa] transition-colors"
+              aria-label="X (Twitter)"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 hover:text-white transition-colors"
             >
-              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </a>
           </div>
         </div>
 
-        {/* Middle row */}
-        <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-white/10 pt-6">
-          <div className="flex items-center gap-6">
-            <a href="#pricing" className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors">
+        {/* Bottom row */}
+        <div className="mt-6 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-5">
+            <a href="#pricing" className="text-xs text-white/40 hover:text-white transition-colors">
               Pricing
             </a>
-            <a href="mailto:hello@pointnemo.com" className="text-sm text-[#a1a1aa] hover:text-[#fafafa] transition-colors">
+            <a href="mailto:hello@pointnemo.com" className="text-xs text-white/40 hover:text-white transition-colors">
               Contact
             </a>
           </div>
-          <p className="text-sm text-[#a1a1aa]">
+          <p className="text-xs text-white/30">
             © {CURRENT_YEAR} Rescue. All rights reserved.
           </p>
         </div>
       </div>
 
       {/* Large background text */}
-      <div className="pointer-events-none select-none overflow-hidden pb-4">
-        <p className="text-center text-[8vw] font-extrabold leading-none tracking-tighter text-white/4">
-          RESCUE&nbsp;&nbsp;RESCUE
+      <div className="pointer-events-none select-none overflow-hidden">
+        <p
+          className="text-center font-extrabold leading-none tracking-tighter text-white/[0.04]"
+          style={{ fontSize: '15vw' }}
+        >
+          RESCUE
         </p>
       </div>
     </footer>

@@ -1,19 +1,28 @@
-import { Button } from '@/components/ui/button'
-
 const RELEASES_URL = 'https://github.com/pointnemo/rescue/releases/latest'
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#09090b]/80 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 md:px-6">
-        <a href="/" className="flex items-center gap-2.5">
-          <img src="/logo.svg" alt="Rescue" className="h-7 w-7" />
-          <span className="text-base font-semibold text-[#fafafa]">Rescue</span>
+    <header className="sticky top-0 z-50 w-full bg-[#0a0a0a]/90 backdrop-blur-sm">
+      <div className="mx-auto flex h-14 max-w-[960px] items-center justify-between border-x border-white/10 px-6">
+        <a href="/" className="flex items-center gap-2">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            className="text-white"
+            aria-hidden="true"
+          >
+            <text x="0" y="15" fontSize="14" fontFamily="monospace" fill="currentColor">&gt;_</text>
+          </svg>
+          <span className="text-sm font-semibold text-white">Rescue</span>
         </a>
 
-        <nav className="flex items-center gap-2">
+        <nav>
           <a href={RELEASES_URL} target="_blank" rel="noopener noreferrer">
-            <Button size="sm">Download</Button>
+            <button className="rounded-full bg-white px-4 py-1.5 text-sm font-medium text-black hover:bg-white/90 transition-colors">
+              Get Started
+            </button>
           </a>
         </nav>
       </div>

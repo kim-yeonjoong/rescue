@@ -13,6 +13,7 @@ import Pricing from '@/components/sections/pricing'
 import Stats from '@/components/sections/stats'
 import Testimonials from '@/components/sections/testimonials'
 import UseCases from '@/components/sections/use-cases'
+import { SectionSeparator } from '@/components/ui/section-separator'
 
 export const Route = createFileRoute('/')({
   component: Home,
@@ -20,19 +21,29 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   return (
-    <main className="min-h-screen bg-[#09090b] overflow-x-hidden">
+    <main className="min-h-screen bg-[#0a0a0a] overflow-x-hidden">
       <Navbar />
-      <Hero />
-      <Logos />
-      <CodeDemo />
-      <UseCases />
-      <Features />
-      <Stats />
-      <Testimonials />
-      <Pricing />
-      <Community />
-      <Blog />
-      <Cta />
+      {/* Single continuous bordered column */}
+      <div className="mx-auto max-w-[960px] border-x border-white/10">
+        <Hero />
+        <Logos />
+        <CodeDemo />
+        <SectionSeparator label="Use Cases" />
+        <UseCases />
+        <SectionSeparator label="Features" />
+        <Features />
+        <SectionSeparator label="Statistics" />
+        <Stats />
+        <SectionSeparator label="Testimonials" />
+        <Testimonials />
+        <SectionSeparator label="Pricing" />
+        <Pricing />
+        <SectionSeparator label="Community" />
+        <Community />
+        <SectionSeparator label="Blog" />
+        <Blog />
+        <Cta />
+      </div>
       <Footer />
     </main>
   )

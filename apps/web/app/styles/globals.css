@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background:       #0a0a0a;
+  --color-card:             #111111;
+  --color-border:           rgba(255, 255, 255, 0.1);
+  --color-text-primary:     #ffffff;
+  --color-text-muted:       rgba(255, 255, 255, 0.5);
+  --color-accent:           #8b5cf6;
+  --color-accent-hover:     #7c3aed;
+
+  --animate-marquee: marquee var(--duration, 40s) linear infinite;
+  --animate-marquee-reverse: marquee var(--duration, 40s) linear infinite reverse;
+  --animate-border-beam: border-beam calc(var(--duration, 15) * 1s) infinite linear;
+  --animate-shiny-text: shiny-text 8s infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap, 1rem))); }
+}
+
+@keyframes border-beam {
+  100% { offset-distance: 100%; }
+}
+
+@keyframes shiny-text {
+  0%, 90%, 100% { background-position: calc(-100% - var(--shiny-width, 100px)) 0; }
+  30%, 60% { background-position: calc(100% + var(--shiny-width, 100px)) 0; }
+}
+
+.section-separator-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}

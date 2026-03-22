@@ -82,7 +82,6 @@ Click the icon to open the panel:
 - **Process control** — kill any process directly from the menu bar
 - **Browser open** — open `localhost:<port>` (or portless URL) in the default browser
 - **Copy** — copy port number or full URL via right-click context menu
-- **Port notifications** — system notification when a new port opens
 - **Uptime tracking** — shows how long each port has been open
 - **Search** — filter by port number, process name, framework, or URL
 - **Sort** — sort by port, process name, or framework
@@ -103,7 +102,6 @@ Click the icon to open the panel:
 | Setting | Default | Description |
 | --- | --- | --- |
 | Launch at Login | Off | Start Rescue automatically on login |
-| Port Notifications | On | System alert when a new port opens |
 | Refresh Interval | 2.5s | How often to scan for open ports (1–10s) |
 | Language | System | English or Korean |
 | Docker | On | Enable Docker container panel |

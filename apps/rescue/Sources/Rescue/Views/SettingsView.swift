@@ -4,7 +4,6 @@ import ServiceManagement
 enum AppStorageKey {
     static let appLanguage = "appLanguage"
     static let pollingInterval = "pollingInterval"
-    static let portNotificationsEnabled = "portNotificationsEnabled"
     static let dockerEnabled = "dockerEnabled"
     static let portlessEnabled = "portlessEnabled"
     static let ignoredProcesses = "ignoredProcesses"
@@ -13,7 +12,6 @@ enum AppStorageKey {
 struct SettingsView: View {
     @AppStorage(AppStorageKey.appLanguage) private var appLanguage: String = "system"
     @AppStorage(AppStorageKey.pollingInterval) private var pollingInterval: Double = 2.5
-    @AppStorage(AppStorageKey.portNotificationsEnabled) private var portNotificationsEnabled: Bool = true
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
     @AppStorage(AppStorageKey.portlessEnabled) private var portlessEnabled: Bool = true
     @AppStorage(AppStorageKey.ignoredProcesses) private var ignoredProcessesRaw: String = ""
@@ -83,17 +81,6 @@ struct SettingsView: View {
                     } catch {
                         launchAtLogin = !enabled
                         launchAtLoginError = String(localized: "Needs a signed app bundle")
-                    }
-                }
-            }
-
-            Section {
-                Toggle(isOn: $portNotificationsEnabled) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Port Notifications")
-                        Text("Alerts you when a new port opens")
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
                     }
                 }
             }

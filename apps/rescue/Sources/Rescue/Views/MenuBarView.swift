@@ -10,7 +10,6 @@ struct MenuBarView: View {
     @State private var isManualRefreshing = false
     @State private var refreshRotation: Double = 0
     @AppStorage(AppStorageKey.pollingInterval) private var pollingInterval: Double = Constants.defaultPollingInterval
-    @AppStorage(AppStorageKey.portNotificationsEnabled) private var portNotificationsEnabled: Bool = true
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
     @AppStorage(AppStorageKey.portlessEnabled) private var portlessEnabled: Bool = true
     @AppStorage(AppStorageKey.ignoredProcesses) private var ignoredProcessesRaw: String = ""
@@ -164,7 +163,6 @@ struct MenuBarView: View {
             }
         }
         .onChange(of: portlessEnabled) { _, _ in applyPortListSettings() }
-        .onChange(of: portNotificationsEnabled) { _, _ in applyPortListSettings() }
         .onChange(of: dockerVM.containers) { _, _ in
             portListVM.reenrichPorts()
         }
@@ -185,7 +183,6 @@ struct MenuBarView: View {
 
     private func applyPortListSettings() {
         portListVM.enricher.portlessEnabled = portlessEnabled
-        portListVM.portNotificationsEnabled = portNotificationsEnabled
         portListVM.ignoredProcesses = Self.parseIgnored(ignoredProcessesRaw)
     }
 

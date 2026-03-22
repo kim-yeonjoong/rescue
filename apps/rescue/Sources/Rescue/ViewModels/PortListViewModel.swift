@@ -39,14 +39,8 @@ final class PortListViewModel {
     private let shell: any ShellExecuting
     private let scanner: PortScanner
     private let uptimeTracker: UptimeTracker
-    private let notificationManager: PortNotificationManager
     private var pollingTask: Task<Void, Never>?
     private var isRefreshing = false
-
-    var portNotificationsEnabled: Bool {
-        get { notificationManager.isEnabled }
-        set { notificationManager.isEnabled = newValue }
-    }
 
     enum SortOrder: String, CaseIterable {
         case byPort = "Port"
@@ -72,7 +66,6 @@ final class PortListViewModel {
             urlOpener: urlOpener
         )
         self.uptimeTracker = UptimeTracker(shell: shell)
-        self.notificationManager = PortNotificationManager()
     }
 
     func startPolling(interval: TimeInterval = Constants.defaultPollingInterval) {
@@ -105,7 +98,7 @@ final class PortListViewModel {
         entries = enricher.enrichWithDockerContainers(entries)
         entries = await enricher.enrichWithPortless(entries)
         await uptimeTracker.update(for: entries)
-        let removedPorts = notificationManager.check(current: entries, previous: ports)
+        let removedPorts = Set(ports.map(\.port)).subtracting(Set(entries.map(\.port)))
         uptimeTracker.cleanup(removedPorts: removedPorts)
         ports = sorted(entries)
     }

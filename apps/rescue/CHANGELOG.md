@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.7...rescue-v0.1.8) (2026-03-22)
+
+
+### Features
+
+* **rescue:** 포트 알림 기능 제거 ([#16](https://github.com/kim-yeonjoong/rescue/issues/16)) ([f001544](https://github.com/kim-yeonjoong/rescue/commit/f0015440f14bce3296f8fc1f3412406ef30b5130))
+
 ## [0.1.7](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.6...rescue-v0.1.7) (2026-03-22)
 
 

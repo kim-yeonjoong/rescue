@@ -57,7 +57,7 @@ struct RescueApp: App {
     }
 
     private static let statusBarIcon: NSImage = {
-        guard let url = Bundle.module.url(forResource: "statusbar-icon", withExtension: "svg"),
+        guard let url = Bundle.rescueResources.url(forResource: "statusbar-icon", withExtension: "svg"),
               let img = NSImage(contentsOf: url) else {
             return NSImage(systemSymbolName: "network", accessibilityDescription: nil)
                 ?? NSImage()

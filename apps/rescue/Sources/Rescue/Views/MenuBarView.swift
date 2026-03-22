@@ -48,12 +48,12 @@ struct MenuBarView: View {
                 }
                 Button {
                     guard !isManualRefreshing else { return }
+                    isManualRefreshing = true
+                    withAnimation(.linear(duration: 0.5)) {
+                        refreshRotation += 360
+                    }
                     Task {
-                        isManualRefreshing = true
                         defer { isManualRefreshing = false }
-                        withAnimation(.linear(duration: 0.5)) {
-                            refreshRotation += 360
-                        }
                         await portListVM.refresh()
                         if dockerEnabled { await dockerVM.refresh() }
                     }

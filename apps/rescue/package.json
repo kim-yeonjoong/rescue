@@ -7,7 +7,6 @@
     "test": "swift test",
     "lint": "swiftlint lint --strict",
     "dev": "swift run Rescue",
-    "build:swift": "swift build -c release",
-    "test:swift": "swift test"
+    "build:swift": "swift build -c release"
   }
 }

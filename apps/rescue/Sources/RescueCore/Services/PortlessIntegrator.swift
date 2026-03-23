@@ -15,12 +15,18 @@ public actor PortlessIntegrator {
     }
 
     private static func defaultRouteStorePaths() -> [URL] {
-        [
+        let userHome = FileManager.default.homeDirectoryForCurrentUser
+        return [
             URL(fileURLWithPath: "/tmp/portless/routes.json"),
-            FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".portless/routes.json"),
-            FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".config/portless/routes.json"),
-            FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".portless/routes"),
-            FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".config/portless/routes"),
+            userHome.appendingPathComponent(".portless/routes.json"),
+            userHome.appendingPathComponent(".config/portless/routes.json"),
+            userHome.appendingPathComponent(".portless/routes"),
+            userHome.appendingPathComponent(".config/portless/routes"),
+            // sudo로 실행된 portless는 root 홈(macOS: /var/root)에 저장
+            URL(fileURLWithPath: "/var/root/.portless/routes.json"),
+            URL(fileURLWithPath: "/var/root/.config/portless/routes.json"),
+            URL(fileURLWithPath: "/var/root/.portless/routes"),
+            URL(fileURLWithPath: "/var/root/.config/portless/routes"),
         ]
     }
 

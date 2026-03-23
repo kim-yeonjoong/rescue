@@ -247,8 +247,9 @@ struct SettingsView: View {
         VStack(spacing: 16) {
             Spacer()
 
-            LucideIconView(.globe, size: 48)
-                .foregroundStyle(.secondary)
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .frame(width: 64, height: 64)
 
             VStack(spacing: 4) {
                 Text("Rescue")
@@ -262,6 +263,16 @@ struct SettingsView: View {
             Text("v\(Self.appVersion)")
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
+
+            if let githubURL = URL(string: "https://github.com/kim-yeonjoong/rescue") {
+                Link(destination: githubURL) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.up.right.square")
+                        Text("View on GitHub")
+                    }
+                    .font(.caption)
+                }
+            }
 
             Divider()
                 .frame(width: 200)

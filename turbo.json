@@ -1,16 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "build": {
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
+    "build": {},
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "test": {},
+    "test": { "cache": false },
     "lint": {},
-    "build:swift": { "cache": false },
-    "test:swift": { "cache": false }
+    "build:swift": { "cache": false }
   }
 }

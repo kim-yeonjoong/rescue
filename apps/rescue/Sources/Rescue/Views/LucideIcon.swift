@@ -11,7 +11,6 @@ enum LucideIcon: String {
     case externalLink = "external-link"
     case trash2 = "trash-2"
     case circleMinus = "circle-minus"
-    case globe
     case packageBox = "package"
     case chevronUp = "chevron-up"
     case chevronDown = "chevron-down"

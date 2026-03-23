@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.8...rescue-v0.1.9) (2026-03-23)
+
+
+### Bug Fixes
+
+* **rescue:** next.js symlink-resolved path detection ([#18](https://github.com/kim-yeonjoong/rescue/issues/18)) ([a7880f7](https://github.com/kim-yeonjoong/rescue/commit/a7880f7b0ef937760f24ca41dbcf7df13f391124))
+
 ## [0.1.8](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.7...rescue-v0.1.8) (2026-03-22)
 
 

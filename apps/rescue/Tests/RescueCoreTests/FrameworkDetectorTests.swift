@@ -96,6 +96,22 @@ import RescueTestSupport
         #expect(result == .angular)
     }
 
+    @Test func detectsNextjsViaResolvedSymlink() async {
+        // Given: npm resolves .bin/next symlink to actual path
+        let mock = MockShellExecutor()
+        await mock.register(
+            command: "ps -p 1234 -o command=",
+            result: ShellResult(exitCode: 0, stdout: "node /Users/hanna/clair/lambda-les-service/frontend/apps/web/node_modules/.bin/../next/dist/bin/next dev --turbopack\n", stderr: "")
+        )
+        let detector = FrameworkDetector(shell: mock)
+
+        // When
+        let result = await detector.detect(port: 3000, pid: 1234, processName: "node")
+
+        // Then
+        #expect(result == .nextjs)
+    }
+
     @Test func doesNotMisdetectContextAsNextjs() async {
         let mock = MockShellExecutor()
         await mock.register(

@@ -47,7 +47,7 @@ public struct FrameworkDetector: Sendable {
     // Order matters: first match wins. Place more specific patterns before generic ones
     // (e.g. "nestjs" before "node_modules/express").
     private static let commandPatterns: [(String, DevFramework)] = [
-        (".bin/next", .nextjs), ("node_modules/next/", .nextjs),
+        (".bin/next", .nextjs), ("node_modules/next/", .nextjs), ("next/dist/bin/next", .nextjs),
         ("svelte-kit", .sveltekit), ("sveltekit", .sveltekit),
         ("angular", .angular), ("ng serve", .angular),
         ("vue-cli", .vueCli), ("@vue/cli", .vueCli),

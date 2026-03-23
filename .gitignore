@@ -9,3 +9,12 @@ DerivedData/
 .turbo/
 .omc/
 .claude/
+.playwright-mcp/
+/rescue-landing-full.png
+/rescue-*.png
+/ref-*.png
+/reference-site.png
+apps/web/app.config.timestamp_*.js
+apps/web/vite.config.js
+apps/web/tsconfig.tsbuildinfo
+apps/web/dist/

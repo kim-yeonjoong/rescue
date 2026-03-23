@@ -98,6 +98,17 @@ export default tseslint.config(
     },
   },
 
+  // Browser globals for plain JS files
+  {
+    files: ["**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.es2022,
+      },
+    },
+  },
+
   // Relax generated/ui component files
   {
     files: ["app/components/ui/**/*.tsx"],

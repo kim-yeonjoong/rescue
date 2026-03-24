@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.9...rescue-v0.1.10) (2026-03-23)
+
+
+### Bug Fixes
+
+* **rescue:** sudo로 실행된 portless 지원 및 코드 정리 ([#20](https://github.com/kim-yeonjoong/rescue/issues/20)) ([418daf4](https://github.com/kim-yeonjoong/rescue/commit/418daf47c18bb2cc6418e2c68625578262e07be2))
+
 ## [0.1.9](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.8...rescue-v0.1.9) (2026-03-23)
 
 

@@ -235,6 +235,14 @@ struct SettingsView: View {
 
     // MARK: - About
 
+    private static var appIconImage: NSImage {
+        if let url = Bundle.rescueResources.url(forResource: "AppIcon", withExtension: "icns"),
+           let image = NSImage(contentsOf: url) {
+            return image
+        }
+        return NSApp.applicationIconImage
+    }
+
     private static var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
             ?? Bundle.main.infoDictionary?["CFBundleVersion"] as? String
@@ -245,7 +253,7 @@ struct SettingsView: View {
         VStack(spacing: 16) {
             Spacer()
 
-            Image(nsImage: NSApp.applicationIconImage)
+            Image(nsImage: Self.appIconImage)
                 .resizable()
                 .frame(width: 64, height: 64)
 

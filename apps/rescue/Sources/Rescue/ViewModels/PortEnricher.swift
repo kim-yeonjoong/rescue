@@ -31,7 +31,12 @@ final class PortEnricher {
     private let portlessIntegrator: PortlessIntegrator
     private let caddyIntegrator: CaddyIntegrator
 
-    init(dockerVM: DockerViewModel, detector: FrameworkDetector, portlessIntegrator: PortlessIntegrator, caddyIntegrator: CaddyIntegrator) {
+    init(
+        dockerVM: DockerViewModel,
+        detector: FrameworkDetector,
+        portlessIntegrator: PortlessIntegrator,
+        caddyIntegrator: CaddyIntegrator
+    ) {
         self.dockerVM = dockerVM
         self.detector = detector
         self.portlessIntegrator = portlessIntegrator

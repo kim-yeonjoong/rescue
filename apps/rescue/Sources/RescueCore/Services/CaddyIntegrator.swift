@@ -54,8 +54,8 @@ public actor CaddyIntegrator {
             resolvedBinaryPath = await findCaddyBinary()
         }
         if resolvedBinaryPath != nil {
-            RescueLogger.caddy.debug("Caddy binary found but admin API not reachable")
-            return false
+            RescueLogger.caddy.debug("Caddy binary found; will attempt Caddyfile fallback if API is unreachable")
+            return true
         }
 
         RescueLogger.caddy.info("Caddy not available")
@@ -104,10 +104,15 @@ public actor CaddyIntegrator {
     // MARK: - Caddyfile Fallback
 
     private func loadFromCaddyfile() async -> [CaddyRoute]? {
-        guard let binary = resolvedBinaryPath ?? (await findCaddyBinary()) else { return nil }
+        if resolvedBinaryPath == nil {
+            resolvedBinaryPath = await findCaddyBinary()
+        }
+        guard let binary = resolvedBinaryPath else { return nil }
         for path in caddyfilePaths {
             guard FileManager.default.fileExists(atPath: path) else { continue }
-            let result = await shell.run(command: binary, arguments: ["adapt", "--config", path, "--adapter", "caddyfile"])
+            let result = await shell.run(
+                command: binary, arguments: ["adapt", "--config", path, "--adapter", "caddyfile"]
+            )
             guard result.succeeded, let data = result.stdout.data(using: .utf8) else { continue }
             if let routes = parseCaddyJSON(data) {
                 RescueLogger.caddy.debug("Loaded \(routes.count) routes from Caddyfile at \(path)")
@@ -126,11 +131,9 @@ public actor CaddyIntegrator {
             if !path.isEmpty { return path }
         }
         let fm = FileManager.default
-        for candidate in binarySearchPaths {
-            if fm.isExecutableFile(atPath: candidate) {
-                RescueLogger.caddy.debug("Found caddy at \(candidate)")
-                return candidate
-            }
+        for candidate in binarySearchPaths where fm.isExecutableFile(atPath: candidate) {
+            RescueLogger.caddy.debug("Found caddy at \(candidate)")
+            return candidate
         }
         RescueLogger.caddy.debug("Could not find caddy binary in known paths")
         return nil
@@ -217,9 +220,11 @@ public actor CaddyIntegrator {
         var result: [(String, UInt16)] = []
         for upstream in upstreams {
             guard let dial = upstream["dial"] as? String else { continue }
-            let parts = dial.split(separator: ":")
-            guard parts.count == 2, let port = UInt16(parts[1]) else { continue }
-            result.append((String(parts[0]), port))
+            let components = dial.components(separatedBy: ":")
+            if components.count >= 2, let portString = components.last, let port = UInt16(portString) {
+                let host = components.dropLast().joined(separator: ":")
+                result.append((host.isEmpty ? "localhost" : host, port))
+            }
         }
         return result
     }

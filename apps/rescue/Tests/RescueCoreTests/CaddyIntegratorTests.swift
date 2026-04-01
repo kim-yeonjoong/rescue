@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 import RescueTestSupport
 @testable import RescueCore
@@ -177,5 +178,202 @@ import RescueTestSupport
         let integrator = CaddyIntegrator(shell: mock, binarySearchPaths: [])
         let available = await integrator.isCaddyAvailable()
         #expect(available == false)
+    }
+
+    @Test func isCaddyAvailableWhenBinaryFoundButAPINotReachable() async {
+        let mock = MockShellExecutor()
+        // curl fails (non-200), but `which caddy` resolves successfully
+        await mock.register(
+            command: "which caddy",
+            result: ShellResult(exitCode: 0, stdout: "/usr/local/bin/caddy", stderr: "")
+        )
+        let integrator = CaddyIntegrator(shell: mock, binarySearchPaths: [])
+        let available = await integrator.isCaddyAvailable()
+        #expect(available == true)
+    }
+
+    // MARK: - Parsing Edge Cases
+
+    @Test func ignoresNonReverseProxyHandlers() async {
+        let json = """
+        {
+            "apps": {
+                "http": {
+                    "servers": {
+                        "srv0": {
+                            "listen": [":443"],
+                            "routes": [
+                                {
+                                    "match": [{"host": ["static.localhost"]}],
+                                    "handle": [{"handler": "file_server", "root": "/var/www"}]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        """
+        let mock = MockShellExecutor()
+        let integrator = CaddyIntegrator(shell: mock)
+        let routes = await integrator.parseCaddyJSON(Data(json.utf8))
+        #expect(routes == nil)
+    }
+
+    @Test func ignoresRoutesWithoutHostMatch() async {
+        let json = """
+        {
+            "apps": {
+                "http": {
+                    "servers": {
+                        "srv0": {
+                            "listen": [":443"],
+                            "routes": [
+                                {
+                                    "handle": [
+                                        {
+                                            "handler": "reverse_proxy",
+                                            "upstreams": [{"dial": "localhost:3000"}]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        """
+        let mock = MockShellExecutor()
+        let integrator = CaddyIntegrator(shell: mock)
+        let routes = await integrator.parseCaddyJSON(Data(json.utf8))
+        #expect(routes == nil)
+    }
+
+    @Test func collectsRoutesFromMultipleServers() async {
+        let json = """
+        {
+            "apps": {
+                "http": {
+                    "servers": {
+                        "srv0": {
+                            "listen": [":443"],
+                            "routes": [
+                                {
+                                    "match": [{"host": ["a.localhost"]}],
+                                    "handle": [{"handler": "reverse_proxy", "upstreams": [{"dial": "localhost:3000"}]}]
+                                }
+                            ]
+                        },
+                        "srv1": {
+                            "listen": [":8443"],
+                            "routes": [
+                                {
+                                    "match": [{"host": ["b.localhost"]}],
+                                    "handle": [{"handler": "reverse_proxy", "upstreams": [{"dial": "localhost:4000"}]}]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        """
+        let mock = MockShellExecutor()
+        let integrator = CaddyIntegrator(shell: mock)
+        let routes = await integrator.parseCaddyJSON(Data(json.utf8))
+        #expect(routes?.count == 2)
+    }
+
+    // MARK: - CaddyRoute Model
+
+    @Test func routeURLAppendsLocalhostForBareName() {
+        let route = CaddyRoute(hostname: "myapp", upstreamPort: 3000)
+        #expect(route.url == "https://myapp.localhost")
+    }
+
+    @Test func routeURLPreservesFullHostname() {
+        let route = CaddyRoute(hostname: "myapp.example.com", upstreamPort: 3000)
+        #expect(route.url == "https://myapp.example.com")
+    }
+
+    @Test func displayHostnameStripsLocaldomainSuffix() {
+        let route = CaddyRoute(hostname: "myapp.localhost", upstreamPort: 3000)
+        #expect(route.displayHostname == "myapp")
+    }
+
+    @Test func displayHostnamePreservesNonLocaldomainHostname() {
+        let route = CaddyRoute(hostname: "myapp.example.com", upstreamPort: 3000)
+        #expect(route.displayHostname == "myapp.example.com")
+    }
+
+    // MARK: - Availability
+
+    // MARK: - Dial Parsing
+
+    @Test func parsesPortOnlyDialString() async {
+        let json = """
+        {
+            "apps": {
+                "http": {
+                    "servers": {
+                        "srv0": {
+                            "listen": [":443"],
+                            "routes": [
+                                {
+                                    "match": [{"host": ["app.localhost"]}],
+                                    "handle": [
+                                        {
+                                            "handler": "reverse_proxy",
+                                            "upstreams": [{"dial": ":3000"}]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        """
+        let mock = MockShellExecutor()
+        let integrator = CaddyIntegrator(shell: mock)
+        let routes = await integrator.parseCaddyJSON(Data(json.utf8))
+        #expect(routes?.count == 1)
+        #expect(routes?.first?.upstreamPort == 3000)
+        #expect(routes?.first?.upstreamHost == "localhost")
+    }
+
+    @Test func parsesIPv6DialString() async {
+        let json = """
+        {
+            "apps": {
+                "http": {
+                    "servers": {
+                        "srv0": {
+                            "listen": [":443"],
+                            "routes": [
+                                {
+                                    "match": [{"host": ["app.localhost"]}],
+                                    "handle": [
+                                        {
+                                            "handler": "reverse_proxy",
+                                            "upstreams": [{"dial": "[::1]:3000"}]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+        """
+        let mock = MockShellExecutor()
+        let integrator = CaddyIntegrator(shell: mock)
+        let routes = await integrator.parseCaddyJSON(Data(json.utf8))
+        #expect(routes?.count == 1)
+        #expect(routes?.first?.upstreamPort == 3000)
+        #expect(routes?.first?.upstreamHost == "[::1]")
     }
 }

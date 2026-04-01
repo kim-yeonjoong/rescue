@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.11](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.10...rescue-v0.1.11) (2026-04-01)
+
+
+### Features
+
+* **rescue:** add Caddy reverse proxy support ([e518f1f](https://github.com/kim-yeonjoong/rescue/commit/e518f1f07a91d9de8212ad9e8eb6e140f09faf31))
+* **rescue:** 섹션 헤더 대문자화 및 아코디언 접기/펼치기 ([#25](https://github.com/kim-yeonjoong/rescue/issues/25)) ([91a06d0](https://github.com/kim-yeonjoong/rescue/commit/91a06d00ea6eb4269cdab211d9771d77d3c86a78))
+
+
+### Bug Fixes
+
+* **rescue:** load app icon from bundle resources in About screen ([#24](https://github.com/kim-yeonjoong/rescue/issues/24)) ([06860d2](https://github.com/kim-yeonjoong/rescue/commit/06860d206a032e7f83bc458466bd509f389399c7))
+
 ## [0.1.10](https://github.com/kim-yeonjoong/rescue/compare/rescue-v0.1.9...rescue-v0.1.10) (2026-03-23)
 
 

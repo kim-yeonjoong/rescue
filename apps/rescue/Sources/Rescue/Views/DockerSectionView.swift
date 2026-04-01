@@ -9,27 +9,12 @@ struct DockerSectionView: View {
         if viewModel.isDockerAvailable {
             VStack(spacing: 0) {
                 // Section title
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
-                } label: {
-                    HStack {
-                        Text("Docker")
-                            .font(.headline)
-                        Spacer()
-                        if !isCollapsed && !viewModel.containers.isEmpty {
-                            Text("\(viewModel.containers.count) container\(viewModel.containers.count == 1 ? "" : "s")")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.top, 12)
-                    .padding(.bottom, 6)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
+                let count = viewModel.containers.count
+                SectionHeaderView(
+                    title: "Docker",
+                    isCollapsed: $isCollapsed,
+                    badge: count > 0 ? "\(count) container\(count == 1 ? "" : "s")" : nil
+                )
 
                 if !isCollapsed {
                     // Table header

@@ -9,28 +9,14 @@ struct CaddySectionView: View {
         if viewModel.enricher.isCaddyAvailable {
             VStack(spacing: 0) {
                 // Section title
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
-                } label: {
-                    HStack {
-                        Text("Caddy")
-                            .font(.headline)
-                        Spacer()
-                        if !isCollapsed && !viewModel.enricher.caddyRoutes.isEmpty {
-                            let count = viewModel.enricher.caddyRoutes.count
-                            Text("\(count) route\(count == 1 ? "" : "s")")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.top, 12)
-                    .padding(.bottom, 6)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
+                SectionHeaderView(
+                    title: "Caddy",
+                    isCollapsed: $isCollapsed,
+                    badge: {
+                        let count = viewModel.enricher.caddyRoutes.count
+                        return count > 0 ? "\(count) route\(count == 1 ? "" : "s")" : nil
+                    }()
+                )
 
                 if !isCollapsed {
                     // Table header

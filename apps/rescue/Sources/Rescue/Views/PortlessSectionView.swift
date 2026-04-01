@@ -9,28 +9,14 @@ struct PortlessSectionView: View {
         if viewModel.enricher.isPortlessAvailable {
             VStack(spacing: 0) {
                 // Section title
-                Button {
-                    withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
-                } label: {
-                    HStack {
-                        Text("Portless")
-                            .font(.headline)
-                        Spacer()
-                        if !isCollapsed && !viewModel.enricher.portlessRoutes.isEmpty {
-                            let count = viewModel.enricher.portlessRoutes.count
-                            Text("\(count) route\(count == 1 ? "" : "s")")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.top, 12)
-                    .padding(.bottom, 6)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
+                SectionHeaderView(
+                    title: "Portless",
+                    isCollapsed: $isCollapsed,
+                    badge: {
+                        let count = viewModel.enricher.portlessRoutes.count
+                        return count > 0 ? "\(count) route\(count == 1 ? "" : "s")" : nil
+                    }()
+                )
 
                 if !isCollapsed {
                     // Table header

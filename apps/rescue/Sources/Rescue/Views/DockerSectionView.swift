@@ -3,43 +3,54 @@ import RescueCore
 
 struct DockerSectionView: View {
     @Bindable var viewModel: DockerViewModel
+    @AppStorage(AppStorageKey.dockerSectionCollapsed) private var isCollapsed: Bool = false
 
     var body: some View {
         if viewModel.isDockerAvailable {
             VStack(spacing: 0) {
                 // Section title
-                HStack {
-                    Text("Docker")
-                        .font(.headline)
-                    Spacer()
-                    if !viewModel.containers.isEmpty {
-                        Text("\(viewModel.containers.count) container\(viewModel.containers.count == 1 ? "" : "s")")
-                            .font(.caption)
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
+                } label: {
+                    HStack {
+                        Text("Docker")
+                            .font(.headline)
+                        Spacer()
+                        if !isCollapsed && !viewModel.containers.isEmpty {
+                            Text("\(viewModel.containers.count) container\(viewModel.containers.count == 1 ? "" : "s")")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
                             .foregroundStyle(.secondary)
                     }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 12)
+                    .padding(.bottom, 6)
+                    .contentShape(Rectangle())
                 }
-                .padding(.horizontal, 12)
-                .padding(.top, 12)
-                .padding(.bottom, 6)
+                .buttonStyle(.plain)
 
-                // Table header
-                DockerTableHeaderView(
-                    sortOrder: viewModel.sortOrder,
-                    sortAscending: viewModel.sortAscending,
-                    onSort: { viewModel.toggleSort($0) }
-                )
+                if !isCollapsed {
+                    // Table header
+                    DockerTableHeaderView(
+                        sortOrder: viewModel.sortOrder,
+                        sortAscending: viewModel.sortAscending,
+                        onSort: { viewModel.toggleSort($0) }
+                    )
 
-                Divider()
+                    Divider()
 
-                // Rows: 포트마다 별도 행으로 표시
-                ForEach(viewModel.filteredContainers) { container in
-                    if container.ports.isEmpty {
-                        DockerRowView(container: container, portMapping: nil, viewModel: viewModel)
-                        Divider()
-                    } else {
-                        ForEach(container.ports, id: \.hostPort) { mapping in
-                            DockerRowView(container: container, portMapping: mapping, viewModel: viewModel)
+                    // Rows: 포트마다 별도 행으로 표시
+                    ForEach(viewModel.filteredContainers) { container in
+                        if container.ports.isEmpty {
+                            DockerRowView(container: container, portMapping: nil, viewModel: viewModel)
                             Divider()
+                        } else {
+                            ForEach(container.ports, id: \.hostPort) { mapping in
+                                DockerRowView(container: container, portMapping: mapping, viewModel: viewModel)
+                                Divider()
+                            }
                         }
                     }
                 }

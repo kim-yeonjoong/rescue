@@ -3,44 +3,55 @@ import RescueCore
 
 struct PortlessSectionView: View {
     @Bindable var viewModel: PortListViewModel
+    @AppStorage(AppStorageKey.portlessSectionCollapsed) private var isCollapsed: Bool = false
 
     var body: some View {
         if viewModel.enricher.isPortlessAvailable {
             VStack(spacing: 0) {
                 // Section title
-                HStack {
-                    Text("portless")
-                        .font(.headline)
-                    Spacer()
-                    if !viewModel.enricher.portlessRoutes.isEmpty {
-                        let count = viewModel.enricher.portlessRoutes.count
-                        Text("\(count) route\(count == 1 ? "" : "s")")
-                            .font(.caption)
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
+                } label: {
+                    HStack {
+                        Text("Portless")
+                            .font(.headline)
+                        Spacer()
+                        if !isCollapsed && !viewModel.enricher.portlessRoutes.isEmpty {
+                            let count = viewModel.enricher.portlessRoutes.count
+                            Text("\(count) route\(count == 1 ? "" : "s")")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
                             .foregroundStyle(.secondary)
                     }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 12)
+                    .padding(.bottom, 6)
+                    .contentShape(Rectangle())
                 }
-                .padding(.horizontal, 12)
-                .padding(.top, 12)
-                .padding(.bottom, 6)
+                .buttonStyle(.plain)
 
-                // Table header
-                PortlessTableHeaderView(
-                    sortOrder: viewModel.enricher.portlessSortOrder,
-                    sortAscending: viewModel.enricher.portlessSortAscending,
-                    onSort: { viewModel.enricher.togglePortlessSort($0) }
-                )
+                if !isCollapsed {
+                    // Table header
+                    PortlessTableHeaderView(
+                        sortOrder: viewModel.enricher.portlessSortOrder,
+                        sortAscending: viewModel.enricher.portlessSortAscending,
+                        onSort: { viewModel.enricher.togglePortlessSort($0) }
+                    )
 
-                Divider()
+                    Divider()
 
-                if viewModel.enricher.portlessRoutes.isEmpty {
-                    Text("No routes yet")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                        .padding(.vertical, 8)
-                } else {
-                    ForEach(viewModel.filteredPortlessRoutes) { route in
-                        PortlessRowView(route: route)
-                        Divider()
+                    if viewModel.enricher.portlessRoutes.isEmpty {
+                        Text("No routes yet")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                            .padding(.vertical, 8)
+                    } else {
+                        ForEach(viewModel.filteredPortlessRoutes) { route in
+                            PortlessRowView(route: route)
+                            Divider()
+                        }
                     }
                 }
             }

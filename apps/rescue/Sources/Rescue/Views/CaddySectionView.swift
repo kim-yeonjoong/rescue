@@ -3,44 +3,55 @@ import RescueCore
 
 struct CaddySectionView: View {
     @Bindable var viewModel: PortListViewModel
+    @AppStorage(AppStorageKey.caddySectionCollapsed) private var isCollapsed: Bool = false
 
     var body: some View {
         if viewModel.enricher.isCaddyAvailable {
             VStack(spacing: 0) {
                 // Section title
-                HStack {
-                    Text("caddy")
-                        .font(.headline)
-                    Spacer()
-                    if !viewModel.enricher.caddyRoutes.isEmpty {
-                        let count = viewModel.enricher.caddyRoutes.count
-                        Text("\(count) route\(count == 1 ? "" : "s")")
-                            .font(.caption)
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
+                } label: {
+                    HStack {
+                        Text("Caddy")
+                            .font(.headline)
+                        Spacer()
+                        if !isCollapsed && !viewModel.enricher.caddyRoutes.isEmpty {
+                            let count = viewModel.enricher.caddyRoutes.count
+                            Text("\(count) route\(count == 1 ? "" : "s")")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
                             .foregroundStyle(.secondary)
                     }
+                    .padding(.horizontal, 12)
+                    .padding(.top, 12)
+                    .padding(.bottom, 6)
+                    .contentShape(Rectangle())
                 }
-                .padding(.horizontal, 12)
-                .padding(.top, 12)
-                .padding(.bottom, 6)
+                .buttonStyle(.plain)
 
-                // Table header
-                CaddyTableHeaderView(
-                    sortOrder: viewModel.enricher.caddySortOrder,
-                    sortAscending: viewModel.enricher.caddySortAscending,
-                    onSort: { viewModel.enricher.toggleCaddySort($0) }
-                )
+                if !isCollapsed {
+                    // Table header
+                    CaddyTableHeaderView(
+                        sortOrder: viewModel.enricher.caddySortOrder,
+                        sortAscending: viewModel.enricher.caddySortAscending,
+                        onSort: { viewModel.enricher.toggleCaddySort($0) }
+                    )
 
-                Divider()
+                    Divider()
 
-                if viewModel.enricher.caddyRoutes.isEmpty {
-                    Text("No routes yet")
-                        .font(.caption)
-                        .foregroundStyle(.tertiary)
-                        .padding(.vertical, 8)
-                } else {
-                    ForEach(viewModel.filteredCaddyRoutes) { route in
-                        CaddyRowView(route: route)
-                        Divider()
+                    if viewModel.enricher.caddyRoutes.isEmpty {
+                        Text("No routes yet")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                            .padding(.vertical, 8)
+                    } else {
+                        ForEach(viewModel.filteredCaddyRoutes) { route in
+                            CaddyRowView(route: route)
+                            Divider()
+                        }
                     }
                 }
             }

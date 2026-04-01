@@ -8,6 +8,9 @@ enum AppStorageKey {
     static let portlessEnabled = "portlessEnabled"
     static let caddyEnabled = "caddyEnabled"
     static let ignoredProcesses = "ignoredProcesses"
+    static let portlessSectionCollapsed = "portlessSectionCollapsed"
+    static let caddySectionCollapsed = "caddySectionCollapsed"
+    static let dockerSectionCollapsed = "dockerSectionCollapsed"
 }
 
 struct SettingsView: View {

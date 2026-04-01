@@ -60,3 +60,34 @@ extension View {
         modifier(HoverRowModifier())
     }
 }
+
+/// 섹션 접기/펼치기 헤더 (Portless, Caddy, Docker 공통)
+struct SectionHeaderView: View {
+    let title: String
+    @Binding var isCollapsed: Bool
+    var badge: String?
+
+    var body: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) { isCollapsed.toggle() }
+        } label: {
+            HStack {
+                Text(title)
+                    .font(.headline)
+                Spacer()
+                if let badge, !isCollapsed {
+                    Text(badge)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                LucideIconView(isCollapsed ? .chevronDown : .chevronUp, size: 11)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 12)
+            .padding(.top, 12)
+            .padding(.bottom, 6)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+}

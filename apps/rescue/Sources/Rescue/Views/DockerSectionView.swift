@@ -3,43 +3,39 @@ import RescueCore
 
 struct DockerSectionView: View {
     @Bindable var viewModel: DockerViewModel
+    @AppStorage(AppStorageKey.dockerSectionCollapsed) private var isCollapsed: Bool = false
 
     var body: some View {
         if viewModel.isDockerAvailable {
             VStack(spacing: 0) {
                 // Section title
-                HStack {
-                    Text("Docker")
-                        .font(.headline)
-                    Spacer()
-                    if !viewModel.containers.isEmpty {
-                        Text("\(viewModel.containers.count) container\(viewModel.containers.count == 1 ? "" : "s")")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .padding(.horizontal, 12)
-                .padding(.top, 12)
-                .padding(.bottom, 6)
-
-                // Table header
-                DockerTableHeaderView(
-                    sortOrder: viewModel.sortOrder,
-                    sortAscending: viewModel.sortAscending,
-                    onSort: { viewModel.toggleSort($0) }
+                let count = viewModel.containers.count
+                SectionHeaderView(
+                    title: "Docker",
+                    isCollapsed: $isCollapsed,
+                    badge: count > 0 ? "\(count) container\(count == 1 ? "" : "s")" : nil
                 )
 
-                Divider()
+                if !isCollapsed {
+                    // Table header
+                    DockerTableHeaderView(
+                        sortOrder: viewModel.sortOrder,
+                        sortAscending: viewModel.sortAscending,
+                        onSort: { viewModel.toggleSort($0) }
+                    )
 
-                // Rows: 포트마다 별도 행으로 표시
-                ForEach(viewModel.filteredContainers) { container in
-                    if container.ports.isEmpty {
-                        DockerRowView(container: container, portMapping: nil, viewModel: viewModel)
-                        Divider()
-                    } else {
-                        ForEach(container.ports, id: \.hostPort) { mapping in
-                            DockerRowView(container: container, portMapping: mapping, viewModel: viewModel)
+                    Divider()
+
+                    // Rows: 포트마다 별도 행으로 표시
+                    ForEach(viewModel.filteredContainers) { container in
+                        if container.ports.isEmpty {
+                            DockerRowView(container: container, portMapping: nil, viewModel: viewModel)
                             Divider()
+                        } else {
+                            ForEach(container.ports, id: \.hostPort) { mapping in
+                                DockerRowView(container: container, portMapping: mapping, viewModel: viewModel)
+                                Divider()
+                            }
                         }
                     }
                 }

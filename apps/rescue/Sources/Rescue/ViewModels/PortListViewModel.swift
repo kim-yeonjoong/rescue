@@ -97,6 +97,7 @@ final class PortListViewModel {
         entries = await enricher.detectFrameworks(entries)
         entries = enricher.enrichWithDockerContainers(entries)
         entries = await enricher.enrichWithPortless(entries)
+        entries = await enricher.enrichWithCaddy(entries)
         await uptimeTracker.update(for: entries)
         let removedPorts = Set(ports.map(\.port)).subtracting(Set(entries.map(\.port)))
         uptimeTracker.cleanup(removedPorts: removedPorts)
@@ -151,6 +152,7 @@ final class PortListViewModel {
                 || entry.processName.lowercased().contains(q)
                 || (entry.framework?.displayName.lowercased().contains(q) ?? false)
                 || (entry.portlessURL?.lowercased().contains(q) ?? false)
+                || (entry.caddyURL?.lowercased().contains(q) ?? false)
             }
         }
         guard !ignoredProcesses.isEmpty else { return base }
@@ -169,6 +171,16 @@ final class PortListViewModel {
         return enricher.portlessRoutes.filter { route in
             route.hostname.lowercased().contains(q)
             || String(route.port).contains(q)
+            || route.url.lowercased().contains(q)
+        }
+    }
+
+    var filteredCaddyRoutes: [CaddyRoute] {
+        guard !searchText.isEmpty else { return enricher.caddyRoutes }
+        let q = searchText.lowercased()
+        return enricher.caddyRoutes.filter { route in
+            route.hostname.lowercased().contains(q)
+            || String(route.upstreamPort).contains(q)
             || route.url.lowercased().contains(q)
         }
     }

@@ -12,6 +12,7 @@ struct MenuBarView: View {
     @AppStorage(AppStorageKey.pollingInterval) private var pollingInterval: Double = Constants.defaultPollingInterval
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
     @AppStorage(AppStorageKey.portlessEnabled) private var portlessEnabled: Bool = true
+    @AppStorage(AppStorageKey.caddyEnabled) private var caddyEnabled: Bool = true
     @AppStorage(AppStorageKey.ignoredProcesses) private var ignoredProcessesRaw: String = ""
     @Environment(\.openWindow) private var openWindow
 
@@ -111,6 +112,9 @@ struct MenuBarView: View {
                     if portlessEnabled {
                         PortlessSectionView(viewModel: portListVM)
                     }
+                    if caddyEnabled {
+                        CaddySectionView(viewModel: portListVM)
+                    }
                     if dockerEnabled {
                         DockerSectionView(viewModel: dockerVM)
                     }
@@ -163,6 +167,7 @@ struct MenuBarView: View {
             }
         }
         .onChange(of: portlessEnabled) { _, _ in applyPortListSettings() }
+        .onChange(of: caddyEnabled) { _, _ in applyPortListSettings() }
         .onChange(of: dockerVM.containers) { _, _ in
             portListVM.reenrichPorts()
         }
@@ -183,6 +188,7 @@ struct MenuBarView: View {
 
     private func applyPortListSettings() {
         portListVM.enricher.portlessEnabled = portlessEnabled
+        portListVM.enricher.caddyEnabled = caddyEnabled
         portListVM.ignoredProcesses = Self.parseIgnored(ignoredProcessesRaw)
     }
 

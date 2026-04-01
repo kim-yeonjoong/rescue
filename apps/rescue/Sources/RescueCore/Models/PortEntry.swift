@@ -6,6 +6,7 @@ public struct PortEntry: Identifiable, Sendable, Hashable {
     public let processName: String
     public var framework: DevFramework?
     public var portlessURL: String?
+    public var caddyURL: String?
 
     public var id: String { "\(port)-\(pid)" }
 
@@ -22,12 +23,14 @@ public struct PortEntry: Identifiable, Sendable, Hashable {
 
     public init(
         port: UInt16, pid: Int32, processName: String,
-        framework: DevFramework? = nil, portlessURL: String? = nil
+        framework: DevFramework? = nil, portlessURL: String? = nil,
+        caddyURL: String? = nil
     ) {
         self.port = port
         self.pid = pid
         self.processName = processName
         self.framework = framework
         self.portlessURL = portlessURL
+        self.caddyURL = caddyURL
     }
 }

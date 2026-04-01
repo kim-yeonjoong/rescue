@@ -31,12 +31,14 @@ struct RescueApp: App {
         let terminator = ProcessTerminator()
         let dockerManager = DockerManager(shell: shell)
         let portlessIntegrator = PortlessIntegrator(shell: shell)
+        let caddyIntegrator = CaddyIntegrator(shell: shell)
         let queue = ActionResultQueue()
         let dockerVM = DockerViewModel(manager: dockerManager, actionQueue: queue)
         let enricher = PortEnricher(
             dockerVM: dockerVM,
             detector: detector,
-            portlessIntegrator: portlessIntegrator
+            portlessIntegrator: portlessIntegrator,
+            caddyIntegrator: caddyIntegrator
         )
 
         _actionQueue = State(initialValue: queue)
@@ -53,6 +55,7 @@ struct RescueApp: App {
     @AppStorage("appLanguage") private var appLanguage: String = "system"
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
     @AppStorage(AppStorageKey.portlessEnabled) private var portlessEnabled: Bool = true
+    @AppStorage(AppStorageKey.caddyEnabled) private var caddyEnabled: Bool = true
 
     private var appLocale: Locale {
         appLanguage == "system" ? .autoupdatingCurrent : Locale(identifier: appLanguage)
@@ -91,6 +94,18 @@ struct RescueApp: App {
                 height += PanelLayout.tableHeader + routeCount * PanelLayout.rowHeight
             }
         } else if portlessEnabled {
+            height += PanelLayout.portlessInstall
+        }
+
+        if caddyEnabled && portListVM.enricher.isCaddyAvailable {
+            height += PanelLayout.sectionHeader
+            if portListVM.enricher.caddyRoutes.isEmpty {
+                height += PanelLayout.tableHeader
+            } else {
+                let routeCount = CGFloat(portListVM.filteredCaddyRoutes.count)
+                height += PanelLayout.tableHeader + routeCount * PanelLayout.rowHeight
+            }
+        } else if caddyEnabled {
             height += PanelLayout.portlessInstall
         }
 

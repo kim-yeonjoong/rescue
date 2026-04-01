@@ -102,6 +102,7 @@ public struct DockerContainer: Identifiable, Equatable, Sendable {
         if img.contains("mysql") || img.contains("mariadb") { return .mysql }
         if img.contains("mongo") { return .mongodb }
         if img.contains("nginx") { return .nginx }
+        if img.contains("caddy") { return .caddy }
         if img.contains("rabbitmq") { return .rabbitmq }
         if img.contains("kafka") { return .kafka }
         if img.contains("elasticsearch") || img.contains("elastic") { return .elasticsearch }

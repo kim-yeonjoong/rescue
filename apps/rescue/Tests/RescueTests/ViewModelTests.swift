@@ -16,13 +16,15 @@ struct PortListViewModelTests {
         let detector = FrameworkDetector(shell: shell)
         let terminator = ProcessTerminator()
         let portlessIntegrator = PortlessIntegrator(shell: shell, routeStorePaths: [], binarySearchPaths: [])
+        let caddyIntegrator = CaddyIntegrator(shell: shell, binarySearchPaths: [])
         let actionQueue = ActionResultQueue()
         let dockerManager = DockerManager(shell: shell)
         let dockerVM = DockerViewModel(manager: dockerManager, actionQueue: actionQueue)
         let enricher = PortEnricher(
             dockerVM: dockerVM,
             detector: detector,
-            portlessIntegrator: portlessIntegrator
+            portlessIntegrator: portlessIntegrator,
+            caddyIntegrator: caddyIntegrator
         )
         return PortListViewModel(
             shell: shell,

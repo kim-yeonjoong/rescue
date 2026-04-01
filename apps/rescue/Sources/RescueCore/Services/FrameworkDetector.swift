@@ -68,6 +68,7 @@ public struct FrameworkDetector: Sendable {
         ("jupyter", .jupyter),
         ("storybook", .storybook),
         ("hono", .hono),
+        ("caddy", .caddy),
     ]
 
     private func matchCommand(_ command: String) -> DevFramework? {
@@ -83,17 +84,21 @@ public struct FrameworkDetector: Sendable {
         return Self.commandPatterns.first { command.contains($0.0) }?.1
     }
 
+    private static let portProcessMap: [UInt16: [String: DevFramework]] = [
+        4200: ["node": .angular],
+        5173: ["node": .vite],
+        8000: ["python": .django],
+        5000: ["python": .flask],
+        8888: ["python": .jupyter],
+        4000: ["beam": .phoenix],
+        1313: ["hugo": .hugo],
+        6006: ["node": .storybook],
+        80: ["caddy": .caddy],
+        443: ["caddy": .caddy],
+        2019: ["caddy": .caddy],
+    ]
+
     private func fallback(port: UInt16, processName: String) -> DevFramework? {
-        switch (port, processName) {
-        case (4200, "node"):   return .angular
-        case (5173, "node"):   return .vite
-        case (8000, "python"): return .django
-        case (5000, "python"): return .flask
-        case (8888, "python"): return .jupyter
-        case (4000, "beam"):   return .phoenix
-        case (1313, "hugo"):   return .hugo
-        case (6006, "node"):   return .storybook
-        default:               return nil
-        }
+        Self.portProcessMap[port]?[processName]
     }
 }

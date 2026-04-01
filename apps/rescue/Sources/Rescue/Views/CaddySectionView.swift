@@ -1,0 +1,218 @@
+import SwiftUI
+import RescueCore
+
+struct CaddySectionView: View {
+    @Bindable var viewModel: PortListViewModel
+
+    var body: some View {
+        if viewModel.enricher.isCaddyAvailable {
+            VStack(spacing: 0) {
+                // Section title
+                HStack {
+                    Text("caddy")
+                        .font(.headline)
+                    Spacer()
+                    if !viewModel.enricher.caddyRoutes.isEmpty {
+                        let count = viewModel.enricher.caddyRoutes.count
+                        Text("\(count) route\(count == 1 ? "" : "s")")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(.horizontal, 12)
+                .padding(.top, 12)
+                .padding(.bottom, 6)
+
+                // Table header
+                CaddyTableHeaderView(
+                    sortOrder: viewModel.enricher.caddySortOrder,
+                    sortAscending: viewModel.enricher.caddySortAscending,
+                    onSort: { viewModel.enricher.toggleCaddySort($0) }
+                )
+
+                Divider()
+
+                if viewModel.enricher.caddyRoutes.isEmpty {
+                    Text("No routes yet")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                        .padding(.vertical, 8)
+                } else {
+                    ForEach(viewModel.filteredCaddyRoutes) { route in
+                        CaddyRowView(route: route)
+                        Divider()
+                    }
+                }
+            }
+        } else if viewModel.enricher.caddyEnabled {
+            CaddyInstallView()
+        }
+    }
+}
+
+struct CaddyInstallView: View {
+    @State private var showCopied = false
+    @State private var copiedTask: Task<Void, Never>?
+
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 6) {
+                LucideIconView(.link)
+                    .foregroundStyle(.secondary)
+                Text("caddy isn't installed")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Text("Install Caddy to use as a reverse proxy")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+            Button {
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString("brew install caddy", forType: .string)
+                withAnimation { showCopied = true }
+                copiedTask?.cancel()
+                copiedTask = Task {
+                    try? await Task.sleep(for: Constants.feedbackDisplayDuration)
+                    if !Task.isCancelled { withAnimation { showCopied = false } }
+                }
+            } label: {
+                HStack(spacing: 4) {
+                    Text(showCopied ? "Copied!" : "brew install caddy")
+                        .font(.system(size: 10, design: .monospaced))
+                    if !showCopied {
+                        LucideIconView(.copy, size: 10)
+                    }
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color.primary.opacity(0.06))
+                .clipShape(RoundedRectangle(cornerRadius: 4))
+                .foregroundStyle(showCopied ? Color.green : Color.secondary)
+            }
+            .buttonStyle(.plain)
+            .help("Copy install command")
+        }
+        .padding()
+    }
+}
+
+struct CaddyTableHeaderView: View {
+    let sortOrder: PortEnricher.CaddySortOrder
+    let sortAscending: Bool
+    let onSort: (PortEnricher.CaddySortOrder) -> Void
+
+    var body: some View {
+        HStack(spacing: 0) {
+            SortableColumnHeader(
+                title: "Port",
+                width: 55,
+                isActive: sortOrder == .byPort,
+                ascending: sortAscending
+            ) {
+                onSort(.byPort)
+            }
+
+            SortableColumnHeader(
+                title: "Hostname",
+                width: 160,
+                isActive: sortOrder == .byHostname,
+                ascending: sortAscending
+            ) {
+                onSort(.byHostname)
+            }
+
+            // URL label (not sortable)
+            Text("URL")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Spacer()
+
+            // Spacer for action area
+            Color.clear.frame(width: 48, height: 1)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Color.primary.opacity(0.03))
+    }
+}
+
+struct CaddyRowView: View {
+    let route: CaddyRoute
+    @State private var isBrowserHovered = false
+    @State private var isCopyHovered = false
+    @State private var showCopied = false
+    @State private var copiedTask: Task<Void, Never>?
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // Upstream port
+            PortCell(port: route.upstreamPort)
+
+            // Hostname
+            Text(route.displayHostname)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .frame(width: 160, alignment: .leading)
+
+            // URL
+            if showCopied {
+                Text("Copied!")
+                    .font(.caption2)
+                    .foregroundStyle(.blue)
+                    .transition(.opacity)
+            } else {
+                Text(route.url.replacingOccurrences(of: "https://", with: ""))
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+                    .lineLimit(1)
+            }
+
+            Spacer()
+
+            // Actions
+            HStack(spacing: 6) {
+                Button {
+                    if let url = URL(string: route.url),
+                       url.scheme == "http" || url.scheme == "https" {
+                        NSWorkspace.shared.open(url)
+                    }
+                } label: {
+                    LucideIconView(.externalLink, size: 12)
+                        .foregroundStyle(isBrowserHovered ? Color.accentColor : Color.secondary)
+                }
+                .buttonStyle(.plain)
+                .onHover { isBrowserHovered = $0 }
+                .help("Open in Browser")
+                .accessibilityLabel("Open \(route.hostname) in browser")
+
+                Button {
+                    copyURL()
+                } label: {
+                    LucideIconView(.copy, size: 12)
+                        .foregroundStyle(isCopyHovered ? Color.accentColor : Color.secondary)
+                }
+                .buttonStyle(.plain)
+                .onHover { isCopyHovered = $0 }
+                .help("Copy URL")
+                .accessibilityLabel("Copy URL for \(route.hostname)")
+            }
+            .frame(width: 48, alignment: .trailing)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 5)
+        .hoverRowStyle()
+    }
+
+    private func copyURL() {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(route.url, forType: .string)
+        withAnimation { showCopied = true }
+        copiedTask?.cancel()
+        copiedTask = Task {
+            try? await Task.sleep(for: Constants.feedbackDisplayDuration)
+            if !Task.isCancelled { withAnimation { showCopied = false } }
+        }
+    }
+}

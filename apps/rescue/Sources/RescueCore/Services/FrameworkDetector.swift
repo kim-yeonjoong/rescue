@@ -68,6 +68,7 @@ public struct FrameworkDetector: Sendable {
         ("jupyter", .jupyter),
         ("storybook", .storybook),
         ("hono", .hono),
+        ("caddy", .caddy),
     ]
 
     private func matchCommand(_ command: String) -> DevFramework? {
@@ -93,6 +94,9 @@ public struct FrameworkDetector: Sendable {
         case (4000, "beam"):   return .phoenix
         case (1313, "hugo"):   return .hugo
         case (6006, "node"):   return .storybook
+        case (80, "caddy"):    return .caddy
+        case (443, "caddy"):   return .caddy
+        case (2019, "caddy"):  return .caddy
         default:               return nil
         }
     }

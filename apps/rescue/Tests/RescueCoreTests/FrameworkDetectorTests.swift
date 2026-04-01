@@ -123,6 +123,28 @@ import RescueTestSupport
         #expect(result == nil)
     }
 
+    @Test func detectsCaddy() async {
+        let mock = MockShellExecutor()
+        await mock.register(
+            command: "ps -p 4444 -o command=",
+            result: ShellResult(exitCode: 0, stdout: "/usr/local/bin/caddy run --config /etc/caddy/Caddyfile\n", stderr: "")
+        )
+        let detector = FrameworkDetector(shell: mock)
+        let result = await detector.detect(port: 443, pid: 4444, processName: "caddy")
+        #expect(result == .caddy)
+    }
+
+    @Test func caddyFallbackPort80() async {
+        let mock = MockShellExecutor()
+        await mock.register(
+            command: "ps -p 5555 -o command=",
+            result: ShellResult(exitCode: 1, stdout: "", stderr: "no such process")
+        )
+        let detector = FrameworkDetector(shell: mock)
+        let result = await detector.detect(port: 80, pid: 5555, processName: "caddy")
+        #expect(result == .caddy)
+    }
+
     @Test func detectsMultipleFrameworks() async {
         let mock = MockShellExecutor()
         // Rails

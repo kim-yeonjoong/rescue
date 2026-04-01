@@ -89,6 +89,11 @@ import Testing
         #expect(container.inferredFramework == .nginx)
     }
 
+    @Test func inferredFrameworkCaddy() {
+        let container = DockerContainer(id: "c1", name: "proxy", image: "caddy:2-alpine", status: .running, rawStatus: "Up 1 hour", ports: [])
+        #expect(container.inferredFramework == .caddy)
+    }
+
     @Test func inferredFrameworkNilForGenericNode() {
         let container = DockerContainer(id: "3", name: "app", image: "node:18-alpine", status: .running, rawStatus: "Up 1 hour", ports: [])
         #expect(container.inferredFramework == nil)
@@ -171,6 +176,7 @@ import Testing
             (.mysql, "MySQL"),
             (.mongodb, "MongoDB"),
             (.nginx, "Nginx"),
+            (.caddy, "Caddy"),
             (.rabbitmq, "RabbitMQ"),
             (.kafka, "Kafka"),
             (.elasticsearch, "Elasticsearch"),
@@ -210,6 +216,7 @@ import Testing
             (.mysql, "mysql"),
             (.mongodb, "mongodb"),
             (.nginx, "nginx"),
+            (.caddy, "caddy"),
             (.rabbitmq, "rabbitmq"),
             (.kafka, "apachekafka"),
             (.elasticsearch, "elasticsearch"),
@@ -221,7 +228,7 @@ import Testing
     }
 
     @Test func allCasesCovered() {
-        #expect(DevFramework.allCases.count == 31)
+        #expect(DevFramework.allCases.count == 32)
     }
 
     @Test func icons() {
@@ -253,6 +260,7 @@ import Testing
             (.mysql, "externaldrive.fill"),
             (.mongodb, "leaf.fill"),
             (.nginx, "server.rack"),
+            (.caddy, "server.rack"),
             (.rabbitmq, "envelope.fill"),
             (.kafka, "arrow.triangle.branch"),
             (.elasticsearch, "magnifyingglass"),
@@ -261,5 +269,45 @@ import Testing
         for (framework, expected) in expectations {
             #expect(framework.icon == expected, "icon for \(framework) should be \(expected)")
         }
+    }
+}
+
+// MARK: - CaddyRoute
+
+@Suite struct CaddyRouteTests {
+
+    @Test func idComputedProperty() {
+        let route = CaddyRoute(hostname: "app.localhost", upstreamPort: 3000)
+        #expect(route.id == "app.localhost-3000")
+    }
+
+    @Test func urlWithDotReturnsHttps() {
+        let route = CaddyRoute(hostname: "app.example.com", upstreamPort: 3000)
+        #expect(route.url == "https://app.example.com")
+    }
+
+    @Test func urlWithoutDotReturnsDotLocalhost() {
+        let route = CaddyRoute(hostname: "myapp", upstreamPort: 3000)
+        #expect(route.url == "https://myapp.localhost")
+    }
+
+    @Test func displayHostnameStripsLocalhost() {
+        let route = CaddyRoute(hostname: "frontend.localhost", upstreamPort: 3000)
+        #expect(route.displayHostname == "frontend")
+    }
+
+    @Test func displayHostnameNoSuffix() {
+        let route = CaddyRoute(hostname: "myapp", upstreamPort: 3000)
+        #expect(route.displayHostname == "myapp")
+    }
+
+    @Test func defaultUpstreamHostIsLocalhost() {
+        let route = CaddyRoute(hostname: "api", upstreamPort: 8080)
+        #expect(route.upstreamHost == "localhost")
+    }
+
+    @Test func customUpstreamHost() {
+        let route = CaddyRoute(hostname: "api", upstreamPort: 8080, upstreamHost: "backend")
+        #expect(route.upstreamHost == "backend")
     }
 }

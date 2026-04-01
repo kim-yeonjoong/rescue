@@ -2,7 +2,7 @@ public enum DevFramework: String, Sendable, CaseIterable {
     case nextjs, vite, angular, vueCli, nuxt, remix, astro, sveltekit
     case django, flask, fastapi, rails, express, nestjs, fastify, springBoot
     case phoenix, hugo, jupyter, storybook, hono, docker, redis
-    case postgresql, mysql, mongodb, nginx, rabbitmq, kafka, elasticsearch, minio
+    case postgresql, mysql, mongodb, nginx, caddy, rabbitmq, kafka, elasticsearch, minio
 
     public var displayName: String { info.displayName }
     /// Resource filename for Simple Icons SVG (without extension)
@@ -42,6 +42,7 @@ public enum DevFramework: String, Sendable, CaseIterable {
         case .mysql: return FrameworkInfo("MySQL", "mysql", "externaldrive.fill", "#4479A1")
         case .mongodb: return FrameworkInfo("MongoDB", "mongodb", "leaf.fill", "#47A248")
         case .nginx: return FrameworkInfo("Nginx", "nginx", "server.rack", "#009639")
+        case .caddy: return FrameworkInfo("Caddy", "caddy", "server.rack", "#1F88C0")
         case .rabbitmq: return FrameworkInfo("RabbitMQ", "rabbitmq", "envelope.fill", "#FF6600")
         case .kafka: return FrameworkInfo("Kafka", "apachekafka", "arrow.triangle.branch", nil)
         case .elasticsearch: return FrameworkInfo("Elasticsearch", "elasticsearch", "magnifyingglass", "#005571")

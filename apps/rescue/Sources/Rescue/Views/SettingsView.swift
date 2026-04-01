@@ -6,6 +6,7 @@ enum AppStorageKey {
     static let pollingInterval = "pollingInterval"
     static let dockerEnabled = "dockerEnabled"
     static let portlessEnabled = "portlessEnabled"
+    static let caddyEnabled = "caddyEnabled"
     static let ignoredProcesses = "ignoredProcesses"
 }
 
@@ -14,6 +15,7 @@ struct SettingsView: View {
     @AppStorage(AppStorageKey.pollingInterval) private var pollingInterval: Double = 2.5
     @AppStorage(AppStorageKey.dockerEnabled) private var dockerEnabled: Bool = true
     @AppStorage(AppStorageKey.portlessEnabled) private var portlessEnabled: Bool = true
+    @AppStorage(AppStorageKey.caddyEnabled) private var caddyEnabled: Bool = true
     @AppStorage(AppStorageKey.ignoredProcesses) private var ignoredProcessesRaw: String = ""
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
     @State private var launchAtLoginError: String?
@@ -213,6 +215,15 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("portless")
                         Text("Access local dev servers by name")
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                    }
+                }
+
+                Toggle(isOn: $caddyEnabled) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Caddy")
+                        Text("View reverse proxy routes from Caddy")
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
                     }

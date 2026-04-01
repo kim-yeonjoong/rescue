@@ -10,7 +10,18 @@ final class PortEnricher {
     var portlessSortOrder: PortlessSortOrder = .byHostname
     var portlessSortAscending: Bool = true
 
+    var isCaddyAvailable = false
+    var caddyEnabled = true
+    var caddyRoutes: [CaddyRoute] = []
+    var caddySortOrder: CaddySortOrder = .byHostname
+    var caddySortAscending: Bool = true
+
     enum PortlessSortOrder: String, CaseIterable {
+        case byHostname = "Hostname"
+        case byPort = "Port"
+    }
+
+    enum CaddySortOrder: String, CaseIterable {
         case byHostname = "Hostname"
         case byPort = "Port"
     }
@@ -18,11 +29,13 @@ final class PortEnricher {
     private let dockerVM: DockerViewModel
     private let detector: FrameworkDetector
     private let portlessIntegrator: PortlessIntegrator
+    private let caddyIntegrator: CaddyIntegrator
 
-    init(dockerVM: DockerViewModel, detector: FrameworkDetector, portlessIntegrator: PortlessIntegrator) {
+    init(dockerVM: DockerViewModel, detector: FrameworkDetector, portlessIntegrator: PortlessIntegrator, caddyIntegrator: CaddyIntegrator) {
         self.dockerVM = dockerVM
         self.detector = detector
         self.portlessIntegrator = portlessIntegrator
+        self.caddyIntegrator = caddyIntegrator
     }
 
     func detectFrameworks(_ entries: [PortEntry]) async -> [PortEntry] {
@@ -97,6 +110,21 @@ final class PortEnricher {
         return match.map(\.name) ?? entry.processName
     }
 
+    func enrichWithCaddy(_ entries: [PortEntry]) async -> [PortEntry] {
+        if caddyEnabled {
+            isCaddyAvailable = await caddyIntegrator.isCaddyAvailable()
+        } else {
+            isCaddyAvailable = false
+        }
+        guard isCaddyAvailable else {
+            caddyRoutes = []
+            return entries
+        }
+        let routes = await caddyIntegrator.loadRoutes()
+        caddyRoutes = sortedCaddy(routes)
+        return caddyIntegrator.enrichEntries(entries, with: routes)
+    }
+
     func togglePortlessSort(_ order: PortlessSortOrder) {
         if portlessSortOrder == order {
             portlessSortAscending.toggle()
@@ -107,6 +135,16 @@ final class PortEnricher {
         portlessRoutes = sortedPortless(portlessRoutes)
     }
 
+    func toggleCaddySort(_ order: CaddySortOrder) {
+        if caddySortOrder == order {
+            caddySortAscending.toggle()
+        } else {
+            caddySortOrder = order
+            caddySortAscending = true
+        }
+        caddyRoutes = sortedCaddy(caddyRoutes)
+    }
+
     private func sortedPortless(_ routes: [PortlessRoute]) -> [PortlessRoute] {
         let asc = portlessSortAscending
         switch portlessSortOrder {
@@ -114,6 +152,16 @@ final class PortEnricher {
             return routes.sorted { asc ? $0.hostname < $1.hostname : $0.hostname > $1.hostname }
         case .byPort:
             return routes.sorted { asc ? $0.port < $1.port : $0.port > $1.port }
+        }
+    }
+
+    private func sortedCaddy(_ routes: [CaddyRoute]) -> [CaddyRoute] {
+        let asc = caddySortAscending
+        switch caddySortOrder {
+        case .byHostname:
+            return routes.sorted { asc ? $0.hostname < $1.hostname : $0.hostname > $1.hostname }
+        case .byPort:
+            return routes.sorted { asc ? $0.upstreamPort < $1.upstreamPort : $0.upstreamPort > $1.upstreamPort }
         }
     }
 }
